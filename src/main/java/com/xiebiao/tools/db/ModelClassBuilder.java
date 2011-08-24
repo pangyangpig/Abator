@@ -35,7 +35,7 @@ public class ModelClassBuilder {
 	try {
 	    for (Table table : tables) {
 		File modelFile = new File(OUTPUT + File.separator
-			+ getModelClassName(table.getName()));
+			+ getModelClassName(table.getName()) + ".java");
 		if (!modelFile.exists()) {
 		    modelFile.createNewFile();
 		}

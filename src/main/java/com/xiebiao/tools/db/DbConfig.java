@@ -1,5 +1,9 @@
 package com.xiebiao.tools.db;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -7,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class DbConfig {
     public static final String INFORMATION_SCHEMA = "information_schema";
@@ -15,6 +20,7 @@ public class DbConfig {
     private String name;
     private String user;
     private String password;
+    private Properties properties;
 
     public DbConfig() {
 	if (System.getProperty("db.host") == null
@@ -22,13 +28,27 @@ public class DbConfig {
 		&& System.getProperty("db.name") == null
 		&& System.getProperty("db.user") == null
 		&& System.getProperty("db.password") == null) {
-	    throw new java.lang.IllegalArgumentException();
+	    properties = new Properties();
+	    try {
+		properties.load(new FileInputStream(new File("")));		
+	    } catch (FileNotFoundException e) {
+		e.printStackTrace();
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    }
 	} else {
 	    host = System.getProperty("db.host");
 	    port = Integer.valueOf(System.getProperty("db.port"));
 	    name = System.getProperty("db.name");
 	    user = System.getProperty("db.user");
 	    password = System.getProperty("db.password");
+	    properties = new Properties();
+	    properties.put("db.host", host);
+	    properties.put("db.port", port);
+	    properties.put("db.name", name);
+	    properties.put("db.user", user);
+	    properties.put("db.password", password);
+	    properties.put("package", "");
 	}
 	try {
 	    Class.forName("com.mysql.jdbc.Driver");
@@ -94,7 +114,7 @@ public class DbConfig {
 	    while (rs.next()) {
 		Column column = new Column();
 		column.setName(rs.getString("COLUMN_NAME"));
-		columns.add(column);		
+		columns.add(column);
 	    }
 	    close(connection);
 	} catch (SQLException e) {
