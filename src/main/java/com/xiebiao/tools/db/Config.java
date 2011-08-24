@@ -13,16 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class DbConfig {
+public class Config {
     public static final String INFORMATION_SCHEMA = "information_schema";
-    private String host;
-    private int port;
-    private String name;
-    private String user;
-    private String password;
     private Properties properties;
+    private static final String CONFIG_FILE = "config.properties";
 
-    public DbConfig() {
+    public Config() {
 	if (System.getProperty("db.host") == null
 		&& System.getProperty("db.port") == null
 		&& System.getProperty("db.name") == null
@@ -30,18 +26,20 @@ public class DbConfig {
 		&& System.getProperty("db.password") == null) {
 	    properties = new Properties();
 	    try {
-		properties.load(new FileInputStream(new File("")));		
+		properties.load(new FileInputStream(
+			new File(System.getProperty("user.dir")
+				+ File.separator + CONFIG_FILE)));
 	    } catch (FileNotFoundException e) {
 		e.printStackTrace();
 	    } catch (IOException e) {
 		e.printStackTrace();
 	    }
 	} else {
-	    host = System.getProperty("db.host");
-	    port = Integer.valueOf(System.getProperty("db.port"));
-	    name = System.getProperty("db.name");
-	    user = System.getProperty("db.user");
-	    password = System.getProperty("db.password");
+	    String host = System.getProperty("db.host");
+	    int port = Integer.valueOf(System.getProperty("db.port"));
+	    String name = System.getProperty("db.name");
+	    String user = System.getProperty("db.user");
+	    String password = System.getProperty("db.password");
 	    properties = new Properties();
 	    properties.put("db.host", host);
 	    properties.put("db.port", port);
@@ -59,9 +57,13 @@ public class DbConfig {
 
     private Connection getConnection() {
 	try {
-	    Connection connection = DriverManager.getConnection("jdbc:mysql://"
-		    + host + ":" + port + "/" + INFORMATION_SCHEMA + "?user="
-		    + user + "&password=" + password);
+	    String jdbcUrl = "jdbc:mysql://"
+		    + properties.getProperty("db.host") + ":"
+		    + properties.getProperty("db.port") + "/"
+		    + INFORMATION_SCHEMA + "?user="
+		    + properties.getProperty("db.user") + "&password="
+		    + properties.getProperty("db.password");
+	    Connection connection = DriverManager.getConnection(jdbcUrl);
 	    return connection;
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -84,7 +86,8 @@ public class DbConfig {
 	try {
 	    PreparedStatement preparedStatement = connection
 		    .prepareStatement(sql);
-	    preparedStatement.setString(1, name);
+	    preparedStatement.setString(1,
+		    this.properties.getProperty("db.name"));
 	    ResultSet rs = preparedStatement.executeQuery();
 	    tables = new ArrayList<Table>();
 	    while (rs.next()) {
@@ -107,13 +110,15 @@ public class DbConfig {
 	try {
 	    PreparedStatement preparedStatement = connection
 		    .prepareStatement(sql);
-	    preparedStatement.setString(1, name);
+	    preparedStatement.setString(1,
+		    this.properties.getProperty("db.name"));
 	    preparedStatement.setString(2, table.getName());
 	    ResultSet rs = preparedStatement.executeQuery();
 	    columns = new ArrayList<Column>();
 	    while (rs.next()) {
 		Column column = new Column();
 		column.setName(rs.getString("COLUMN_NAME"));
+		column.setDataType(rs.getString("DATA_TYPE"));
 		columns.add(column);
 	    }
 	    close(connection);
@@ -121,5 +126,9 @@ public class DbConfig {
 	    e.printStackTrace();
 	}
 	return columns;
+    }
+
+    public Properties getProperties() {
+	return properties;
     }
 }

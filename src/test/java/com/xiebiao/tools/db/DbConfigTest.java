@@ -3,7 +3,7 @@ package com.xiebiao.tools.db;
 import junit.framework.TestCase;
 
 public class DbConfigTest extends TestCase {
-    private DbConfig dbConfig;
+    private Config dbConfig;
 
     protected void setUp() throws Exception {
 	super.setUp();
@@ -12,7 +12,7 @@ public class DbConfigTest extends TestCase {
 	System.setProperty("db.name", "leku_live");
 	System.setProperty("db.user", "root");
 	System.setProperty("db.password", "weare13G");
-	dbConfig = new DbConfig();
+	dbConfig = new Config();
     }
 
     public void testGetTables() {
