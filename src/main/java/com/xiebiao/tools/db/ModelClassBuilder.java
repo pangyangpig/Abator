@@ -6,8 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 生成表对应的Model
@@ -42,6 +42,9 @@ public class ModelClassBuilder extends ClassBuilder {
     public ModelClassBuilder from(Table table) {
 	sb = new StringBuffer();
 	fields = new HashMap<String, String>();
+	if (table == null || table.getName().equals("")) {
+	    throw new java.lang.IllegalArgumentException();
+	}
 	this.table = table;
 	return this;
     }
@@ -55,10 +58,17 @@ public class ModelClassBuilder extends ClassBuilder {
 
     protected void buildImport() {
 	sb.append("\n");
-	for (Column c : table.getColumns()) {
-	    if (c.getDataType().equalsIgnoreCase("datetime")) {
-		sb.append("import java.util.Date;\n");
-		break;
+	if (table.getColumns() == null) {
+	    return;
+	} else {
+	    for (Column c : table.getColumns()) {
+		if (c.getDataType().equals(DataType.TIME)
+			|| c.getDataType().equals(DataType.YEAR)
+			|| c.getDataType().equals(DataType.TIMESTAMP)
+			|| c.getDataType().equals(DataType.DATETIME)) {
+		    sb.append("import java.util.Date;\n");
+		    break;
+		}
 	    }
 	}
 	sb.append("\n");
@@ -80,64 +90,89 @@ public class ModelClassBuilder extends ClassBuilder {
 
     protected void buildField() {
 	sb.append("\n");
-	List<Column> columns = table.getColumns();
-	for (Column c : columns) {
-	    if (c.getDataType().equalsIgnoreCase("int")) {
-		sb.append(tab + "protected int "
-			+ getCamelName(this.getCamelName(c.getName())) + ";//"
-			+ c.getComment() + "\n");
-		fields.put(this.getCamelName(this.getCamelName(c.getName())),
-			"int");
-	    } else if (c.getDataType().equalsIgnoreCase("bigint")) {
-		sb.append(tab + "protected int "
-			+ getCamelName(this.getCamelName(c.getName())) + ";//"
-			+ c.getComment() + "\n");
-		fields.put(this.getCamelName(c.getName()), "int");
-	    } else if (c.getDataType().equalsIgnoreCase("double")) {
-		sb.append(tab + "protected double "
-			+ getCamelName(this.getCamelName(c.getName())) + ";//"
-			+ c.getComment() + "\n");
-		fields.put(this.getCamelName(c.getName()), "double");
-	    } else if (c.getDataType().equalsIgnoreCase("float")) {
-		sb.append(tab + "protected float "
-			+ getCamelName(this.getCamelName(c.getName())) + ";//"
-			+ c.getComment() + "\n");
-		fields.put(this.getCamelName(c.getName()), "float");
-	    } else if (c.getDataType().equalsIgnoreCase("tinyint")) {
-		sb.append(tab + "protected int "
-			+ getCamelName(this.getCamelName(c.getName())) + ";//"
-			+ c.getComment() + "\n");
-		fields.put(this.getCamelName(c.getName()), "int");
-	    } else if (c.getDataType().equalsIgnoreCase("varchar")) {
-		sb.append(tab + "protected String "
-			+ getCamelName(this.getCamelName(c.getName())) + ";//"
-			+ c.getComment() + "\n");
-		fields.put(this.getCamelName(c.getName()), "String");
-	    } else if (c.getDataType().equalsIgnoreCase("char")) {
-		sb.append(tab + "protected String "
-			+ getCamelName(this.getCamelName(c.getName())) + ";//"
-			+ c.getComment() + "\n");
-		fields.put(this.getCamelName(c.getName()), "String");
-	    } else if (c.getDataType().equalsIgnoreCase("datetime")) {
-		sb.append(tab + "protected Date "
-			+ getCamelName(this.getCamelName(c.getName())) + ";//"
-			+ c.getComment() + "\n");
-		fields.put(this.getCamelName(c.getName()), "Date");
-	    } else if (c.getDataType().equalsIgnoreCase("text")) {
-		sb.append(tab + "protected String "
-			+ getCamelName(this.getCamelName(c.getName())) + ";//"
-			+ c.getComment() + "\n");
-		fields.put(this.getCamelName(c.getName()), "String");
-	    } else if (c.getDataType().equalsIgnoreCase("tinytext")) {
-		sb.append(tab + "protected String "
-			+ getCamelName(this.getCamelName(c.getName())) + ";//"
-			+ c.getComment() + "\n");
-		fields.put(this.getCamelName(c.getName()), "String");
-	    } else if (c.getDataType().equalsIgnoreCase("longtext")) {
-		sb.append(tab + "protected String "
-			+ getCamelName(this.getCamelName(c.getName())) + ";//"
-			+ c.getComment() + "\n");
-		fields.put(this.getCamelName(c.getName()), "String");
+	Set<Column> columns = table.getColumns();
+	if (columns == null) {
+	    System.err.println("WARN: Table=" + table.getName()
+		    + " has no column.");
+	    return;
+	} else {
+	    for (Column c : columns) {
+		String name = getCamelName(this.getCamelName(c.getName()));
+		if (JavaKeyWord.isJavaKeyWord(name)) {
+		    name = "_" + name;
+		}
+		switch (c.getDataType()) {
+		case TIME:
+		    sb.append(tab + "protected Date " + name + ";//"
+			    + c.getComment() + "\n");
+		    fields.put(this.getCamelName(c.getName()), "Date");
+		    break;
+		case YEAR:
+		    sb.append(tab + "protected Date " + name + ";//"
+			    + c.getComment() + "\n");
+		    fields.put(this.getCamelName(c.getName()), "Date");
+		    break;
+		case TIMESTAMP:
+		    sb.append(tab + "protected Date " + name + ";//"
+			    + c.getComment() + "\n");
+		    fields.put(this.getCamelName(c.getName()), "Date");
+		    break;
+		case DATETIME:
+		    sb.append(tab + "protected Date " + name + ";//"
+			    + c.getComment() + "\n");
+		    fields.put(this.getCamelName(c.getName()), "Date");
+		    break;
+		case DOUBLE:
+		    sb.append(tab + "protected double " + name + ";//"
+			    + c.getComment() + "\n");
+		    fields.put(this.getCamelName(c.getName()), "double");
+		    break;
+		case FLOAT:
+		    sb.append(tab + "protected float " + name + ";//"
+			    + c.getComment() + "\n");
+		    fields.put(this.getCamelName(c.getName()), "float");
+		    break;
+		case CHAR:
+		    sb.append(tab + "protected String " + name + ";//"
+			    + c.getComment() + "\n");
+		    fields.put(this.getCamelName(c.getName()), "String");
+		    break;
+		case VARCHAR:
+		    sb.append(tab + "protected String " + name + ";//"
+			    + c.getComment() + "\n");
+		    fields.put(this.getCamelName(c.getName()), "String");
+		    break;
+		case INT:
+		    sb.append(tab + "protected int " + name + ";//"
+			    + c.getComment() + "\n");
+		    fields.put(this.getCamelName(c.getName()), "int");
+		    break;
+		case TINYINT:
+		    sb.append(tab + "protected int " + name + ";//"
+			    + c.getComment() + "\n");
+		    fields.put(this.getCamelName(c.getName()), "int");
+		    break;
+		case BIGINT:
+		    sb.append(tab + "protected int " + name + ";//"
+			    + c.getComment() + "\n");
+		    fields.put(this.getCamelName(c.getName()), "int");
+		    break;
+		case TEXT:
+		    sb.append(tab + "protected String " + name + ";//"
+			    + c.getComment() + "\n");
+		    fields.put(this.getCamelName(c.getName()), "String");
+		    break;
+		case TINYTEXT:
+		    sb.append(tab + "protected String " + name + ";//"
+			    + c.getComment() + "\n");
+		    fields.put(this.getCamelName(c.getName()), "String");
+		    break;
+		case LONGTEXT:
+		    sb.append(tab + "protected String " + name + ";//"
+			    + c.getComment() + "\n");
+		    fields.put(this.getCamelName(c.getName()), "String");
+		    break;
+		}
 	    }
 	}
     }
@@ -147,20 +182,26 @@ public class ModelClassBuilder extends ClassBuilder {
 	Iterator<String> keys = fields.keySet().iterator();
 	while (keys.hasNext()) {
 	    String field = (String) keys.next();
+	    String _field = field;
+	    if (JavaKeyWord.isJavaKeyWord(field)) {
+		_field = "_" + field;
+	    }
 	    sb.append("\n");
 	    sb.append(
 		    tab + "public void set"
 			    + field.substring(0, 1).toUpperCase()
 			    + field.substring(1, field.length()) + "("
-			    + fields.get(field) + " " + field + ")")
-		    .append("{\n").append("").append(tab + "}\n");
+			    + fields.get(field) + " " + _field + ")")
+		    .append("{\n")
+		    .append(tab + tab + "this." + _field + " = " + _field
+			    + ";\n").append(tab + "}\n");
 	    sb.append("\n");
 	    sb.append(
 		    tab + "public " + fields.get(field) + " get"
 			    + field.substring(0, 1).toUpperCase()
 			    + field.substring(1, field.length()) + "()")
 		    .append("{\n").append(tab)
-		    .append(tab + "return this." + field + ";\n")
+		    .append(tab + "return this." + _field + ";\n")
 		    .append(tab + "}\n");
 	}
 
@@ -216,8 +257,9 @@ public class ModelClassBuilder extends ClassBuilder {
 
     private String getCamelName(String name) {
 	name = getModelClassName(name);
-	return name.substring(0, 1).toLowerCase()
+	name = name.substring(0, 1).toLowerCase()
 		+ name.substring(1, name.length());
+	return name;
     }
 
     class CreateFiles implements Runnable {

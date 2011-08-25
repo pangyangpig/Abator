@@ -16,6 +16,6 @@ public class DbConfigTest extends TestCase {
     }
 
     public void testGetTables() {
-	 System.out.println(dbConfig.getTables());
+	org.junit.Assert.assertNotNull(dbConfig.getTables());
     }
 }

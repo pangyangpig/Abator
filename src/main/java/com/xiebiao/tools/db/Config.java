@@ -10,8 +10,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 public class Config {
     public static final String INFORMATION_SCHEMA = "information_schema";
@@ -104,10 +106,10 @@ public class Config {
 	return tables;
     }
 
-    public List<Column> getColumns(Table table) {
+    public Set<Column> getColumns(Table table) {
 	Connection connection = this.getConnection();
 	String sql = "select * from COLUMNS where TABLE_SCHEMA=? and TABLE_NAME=?";
-	List<Column> columns = null;
+	Set<Column> columns = null;
 	try {
 	    PreparedStatement preparedStatement = connection
 		    .prepareStatement(sql);
@@ -115,16 +117,22 @@ public class Config {
 		    this.properties.getProperty("db.name"));
 	    preparedStatement.setString(2, table.getName());
 	    ResultSet rs = preparedStatement.executeQuery();
-	    columns = new ArrayList<Column>();
+	    columns = new HashSet<Column>();
+	    boolean hasPriKey = false;
 	    while (rs.next()) {
 		Column column = new Column();
 		column.setName(rs.getString("COLUMN_NAME"));
-		column.setDataType(rs.getString("DATA_TYPE"));
+		column.setDataType(DataType.to(rs.getString("DATA_TYPE")));
 		if (rs.getString("COLUMN_KEY").equalsIgnoreCase("PRI")) {
 		    column.setKey(column.getName());
+		    hasPriKey = true;
 		}
 		column.setComment(rs.getString("COLUMN_COMMENT"));
 		columns.add(column);
+	    }
+	    if (!hasPriKey) {
+		System.out.println("WARN: Table=" + table.getName()
+			+ " must have PRI KEY. ");
 	    }
 	    close(connection);
 	} catch (SQLException e) {

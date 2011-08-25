@@ -10,19 +10,39 @@ public class Column {
     }
 
     public String getKey() {
-        return key;
+	return key;
     }
 
     public void setKey(String key) {
-        this.key = key;
+	this.key = key;
     }
 
     public String getComment() {
-        return comment;
+	return comment;
     }
 
     public void setComment(String comment) {
-        this.comment = comment;
+	this.comment = comment;
+    }
+
+    public int hashCode() {
+	int hashCode = 0;
+	char[] cc = this.name.toCharArray();
+	for (char c : cc) {
+	    hashCode = hashCode + c;
+	}
+	return hashCode;
+
+    }
+
+    public boolean equals(Object obj) {
+	if (obj instanceof Column) {
+	    Column c = (Column) obj;
+	    if (c.getName().equals(name)) {
+		return true;
+	    }
+	}
+	return false;
     }
 
     public String toString() {
@@ -32,16 +52,21 @@ public class Column {
 	return sb.toString();
     }
 
-    public String getDataType() {
+    public DataType getDataType() {
 	return dataType;
     }
 
-    public void setDataType(String dataType) {
+    public void setDataType(DataType dataType) {
 	this.dataType = dataType;
     }
 
+    public Column() {
+	comment = "";
+	key = "";
+    }
+
     private String name;
-    private String dataType;
+    private DataType dataType;
     private String key;
     private String comment;
 

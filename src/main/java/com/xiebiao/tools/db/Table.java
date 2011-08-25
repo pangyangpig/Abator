@@ -1,11 +1,16 @@
 package com.xiebiao.tools.db;
 
 import java.util.List;
+import java.util.Set;
 
 public class Table {
     private String name;
-    private List<Column> columns;
+    private Set<Column> columns;
     private String comment;
+
+    public Table() {
+	comment = "";
+    }
 
     public String getName() {
 	return name;
@@ -20,16 +25,16 @@ public class Table {
 	this.comment = comment;
     }
 
+    public Set<Column> getColumns() {
+        return columns;
+    }
+
+    public void setColumns(Set<Column> columns) {
+        this.columns = columns;
+    }
+
     public void setName(String name) {
 	this.name = name;
-    }
-
-    public List<Column> getColumns() {
-	return columns;
-    }
-
-    public void setColumns(List<Column> columns) {
-	this.columns = columns;
     }
 
     public String toString() {
