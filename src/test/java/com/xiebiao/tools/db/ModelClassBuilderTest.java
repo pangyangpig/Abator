@@ -27,7 +27,8 @@ public class ModelClassBuilderTest extends BaseTestCase {
 	Column _float = new Column();
 	_float.setName("float");
 	_float.setDataType(DataType.FLOAT);
-
+	_float.setComment("字段说明");
+	
 	Set<Column> columns = new HashSet<Column>();
 	columns.add(name);
 	columns.add(year);
@@ -36,6 +37,7 @@ public class ModelClassBuilderTest extends BaseTestCase {
 	Table table = new Table();
 	table.setName("AA");
 	table.setColumns(columns);
+	table.setComment("这是表说明");
 	modelClassBuilder.from(table).create();
     }
 }

@@ -9,14 +9,6 @@ public class Column {
 	this.name = name;
     }
 
-    public String getKey() {
-	return key;
-    }
-
-    public void setKey(String key) {
-	this.key = key;
-    }
-
     public String getComment() {
 	return comment;
     }
@@ -60,14 +52,22 @@ public class Column {
 	this.dataType = dataType;
     }
 
+    public boolean isPrimaryKey() {
+	return primaryKey;
+    }
+
+    public void setPrimaryKey(boolean primaryKey) {
+	this.primaryKey = primaryKey;
+    }
+
     public Column() {
 	comment = "";
-	key = "";
+	primaryKey = false;
     }
 
     private String name;
     private DataType dataType;
-    private String key;
+    private boolean primaryKey;
     private String comment;
 
 }

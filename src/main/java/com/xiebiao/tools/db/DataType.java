@@ -1,7 +1,7 @@
 package com.xiebiao.tools.db;
 
 public enum DataType {
-    TIME, YEAR, TIMESTAMP, DATETIME, DOUBLE, FLOAT, CHAR, VARCHAR, INT, TINYINT, BIGINT, TEXT, TINYTEXT, LONGTEXT;
+    TIME, YEAR, TIMESTAMP, DATETIME, DOUBLE, FLOAT, CHAR, VARCHAR, INT, TINYINT, BIGINT, TEXT, TINYTEXT, MEDIUMTEXT, LONGTEXT;
     public static DataType to(String name) {
 	if (name.toUpperCase().equals(TIME.name())) {
 	    return TIME;
@@ -29,9 +29,13 @@ public enum DataType {
 	    return TEXT;
 	} else if (name.toUpperCase().equals(TINYTEXT.name())) {
 	    return TINYTEXT;
+	} else if (name.toUpperCase().equals(MEDIUMTEXT.name())) {
+	    return MEDIUMTEXT;
 	} else if (name.toUpperCase().equals(LONGTEXT.name())) {
 	    return LONGTEXT;
+	} else {
+	    System.err.println("ERROR: column=" + name + "");
+	    return VARCHAR;
 	}
-	return null;
     }
 }

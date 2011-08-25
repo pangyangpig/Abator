@@ -77,8 +77,8 @@ public class ModelClassBuilder extends ClassBuilder {
     protected void buildAnnotate() {
 	sb.append("\n");
 	sb.append("/**\n");
-	sb.append("*" + table.getComment() + "\n");
-	sb.append("*/");
+	sb.append(" * " + table.getComment() + "\n");
+	sb.append(" */");
 	sb.append("\n");
     }
 
@@ -100,6 +100,9 @@ public class ModelClassBuilder extends ClassBuilder {
 		String name = getCamelName(this.getCamelName(c.getName()));
 		if (JavaKeyWord.isJavaKeyWord(name)) {
 		    name = "_" + name;
+		}
+		if (c.isPrimaryKey()) {
+		    sb.append(tab + "//primary key \n");
 		}
 		switch (c.getDataType()) {
 		case TIME:

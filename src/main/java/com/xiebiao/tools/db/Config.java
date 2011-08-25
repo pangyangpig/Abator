@@ -124,7 +124,7 @@ public class Config {
 		column.setName(rs.getString("COLUMN_NAME"));
 		column.setDataType(DataType.to(rs.getString("DATA_TYPE")));
 		if (rs.getString("COLUMN_KEY").equalsIgnoreCase("PRI")) {
-		    column.setKey(column.getName());
+		    column.setPrimaryKey(true);
 		    hasPriKey = true;
 		}
 		column.setComment(rs.getString("COLUMN_COMMENT"));
