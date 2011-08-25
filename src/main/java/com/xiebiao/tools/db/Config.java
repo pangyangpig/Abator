@@ -93,6 +93,7 @@ public class Config {
 	    while (rs.next()) {
 		Table table = new Table();
 		table.setName(rs.getString("TABLE_NAME"));
+		table.setComment(rs.getString("TABLE_COMMENT"));
 		table.setColumns(getColumns(table));
 		tables.add(table);
 	    }
@@ -119,6 +120,10 @@ public class Config {
 		Column column = new Column();
 		column.setName(rs.getString("COLUMN_NAME"));
 		column.setDataType(rs.getString("DATA_TYPE"));
+		if (rs.getString("COLUMN_KEY").equalsIgnoreCase("PRI")) {
+		    column.setKey(column.getName());
+		}
+		column.setComment(rs.getString("COLUMN_COMMENT"));
 		columns.add(column);
 	    }
 	    close(connection);

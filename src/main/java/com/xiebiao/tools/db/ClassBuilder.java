@@ -9,6 +9,10 @@ public class ClassBuilder {
 
     }
 
+    protected void buildAnnotate() {
+
+    }
+
     protected void buildClassName() {
 
     }
@@ -28,6 +32,7 @@ public class ClassBuilder {
     public final void build() {
 	buildPackage();
 	buildImport();
+	buildAnnotate();
 	buildClassName();
 	buildField();
 	buildSetterGetter();

@@ -5,11 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * 生成表对应的Model
@@ -29,6 +27,9 @@ public class ModelClassBuilder extends ClassBuilder {
 
     public ModelClassBuilder(String _package) {
 	tab = "    ";
+	if (_package == null || _package.equals("")) {
+	    System.out.println("WARN: package must be setting. ");
+	}
 	this._package = _package;
 	File outputDir = new File(OUTPUT);
 	if (!outputDir.exists()) {
@@ -63,6 +64,14 @@ public class ModelClassBuilder extends ClassBuilder {
 	sb.append("\n");
     }
 
+    protected void buildAnnotate() {
+	sb.append("\n");
+	sb.append("/**\n");
+	sb.append("*" + table.getComment() + "\n");
+	sb.append("*/");
+	sb.append("\n");
+    }
+
     protected void buildClassName() {
 	sb.append("\n");
 	sb.append("public class "
@@ -75,40 +84,59 @@ public class ModelClassBuilder extends ClassBuilder {
 	for (Column c : columns) {
 	    if (c.getDataType().equalsIgnoreCase("int")) {
 		sb.append(tab + "protected int "
-			+ getCamelName(this.getCamelName(c.getName())) + ";\n");
+			+ getCamelName(this.getCamelName(c.getName())) + ";//"
+			+ c.getComment() + "\n");
 		fields.put(this.getCamelName(this.getCamelName(c.getName())),
 			"int");
+	    } else if (c.getDataType().equalsIgnoreCase("bigint")) {
+		sb.append(tab + "protected int "
+			+ getCamelName(this.getCamelName(c.getName())) + ";//"
+			+ c.getComment() + "\n");
+		fields.put(this.getCamelName(c.getName()), "int");
 	    } else if (c.getDataType().equalsIgnoreCase("double")) {
 		sb.append(tab + "protected double "
-			+ getCamelName(this.getCamelName(c.getName())) + ";\n");
+			+ getCamelName(this.getCamelName(c.getName())) + ";//"
+			+ c.getComment() + "\n");
 		fields.put(this.getCamelName(c.getName()), "double");
 	    } else if (c.getDataType().equalsIgnoreCase("float")) {
 		sb.append(tab + "protected float "
-			+ getCamelName(this.getCamelName(c.getName())) + ";\n");
+			+ getCamelName(this.getCamelName(c.getName())) + ";//"
+			+ c.getComment() + "\n");
 		fields.put(this.getCamelName(c.getName()), "float");
 	    } else if (c.getDataType().equalsIgnoreCase("tinyint")) {
 		sb.append(tab + "protected int "
-			+ getCamelName(this.getCamelName(c.getName())) + ";\n");
+			+ getCamelName(this.getCamelName(c.getName())) + ";//"
+			+ c.getComment() + "\n");
 		fields.put(this.getCamelName(c.getName()), "int");
 	    } else if (c.getDataType().equalsIgnoreCase("varchar")) {
 		sb.append(tab + "protected String "
-			+ getCamelName(this.getCamelName(c.getName())) + ";\n");
+			+ getCamelName(this.getCamelName(c.getName())) + ";//"
+			+ c.getComment() + "\n");
 		fields.put(this.getCamelName(c.getName()), "String");
 	    } else if (c.getDataType().equalsIgnoreCase("char")) {
 		sb.append(tab + "protected String "
-			+ getCamelName(this.getCamelName(c.getName())) + ";\n");
+			+ getCamelName(this.getCamelName(c.getName())) + ";//"
+			+ c.getComment() + "\n");
 		fields.put(this.getCamelName(c.getName()), "String");
 	    } else if (c.getDataType().equalsIgnoreCase("datetime")) {
 		sb.append(tab + "protected Date "
-			+ getCamelName(this.getCamelName(c.getName())) + ";\n");
+			+ getCamelName(this.getCamelName(c.getName())) + ";//"
+			+ c.getComment() + "\n");
 		fields.put(this.getCamelName(c.getName()), "Date");
 	    } else if (c.getDataType().equalsIgnoreCase("text")) {
 		sb.append(tab + "protected String "
-			+ getCamelName(this.getCamelName(c.getName())) + ";\n");
+			+ getCamelName(this.getCamelName(c.getName())) + ";//"
+			+ c.getComment() + "\n");
 		fields.put(this.getCamelName(c.getName()), "String");
 	    } else if (c.getDataType().equalsIgnoreCase("tinytext")) {
 		sb.append(tab + "protected String "
-			+ getCamelName(this.getCamelName(c.getName())) + ";\n");
+			+ getCamelName(this.getCamelName(c.getName())) + ";//"
+			+ c.getComment() + "\n");
+		fields.put(this.getCamelName(c.getName()), "String");
+	    } else if (c.getDataType().equalsIgnoreCase("longtext")) {
+		sb.append(tab + "protected String "
+			+ getCamelName(this.getCamelName(c.getName())) + ";//"
+			+ c.getComment() + "\n");
 		fields.put(this.getCamelName(c.getName()), "String");
 	    }
 	}
@@ -116,16 +144,17 @@ public class ModelClassBuilder extends ClassBuilder {
 
     protected void buildSetterGetter() {
 	sb.append("\n");
-	List<Column> columns = table.getColumns();
-	Iterator keys = fields.keySet().iterator();
+	Iterator<String> keys = fields.keySet().iterator();
 	while (keys.hasNext()) {
 	    String field = (String) keys.next();
+	    sb.append("\n");
 	    sb.append(
 		    tab + "public void set"
 			    + field.substring(0, 1).toUpperCase()
 			    + field.substring(1, field.length()) + "("
 			    + fields.get(field) + " " + field + ")")
 		    .append("{\n").append("").append(tab + "}\n");
+	    sb.append("\n");
 	    sb.append(
 		    tab + "public " + fields.get(field) + " get"
 			    + field.substring(0, 1).toUpperCase()
@@ -168,7 +197,8 @@ public class ModelClassBuilder extends ClassBuilder {
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
-
+	// Thread thread = new Thread(new CreateFiles());
+	// thread.start();
     }
 
     private String getModelClassName(String name) {
@@ -193,8 +223,34 @@ public class ModelClassBuilder extends ClassBuilder {
     class CreateFiles implements Runnable {
 
 	public void run() {
-	    // TODO Auto-generated method stub
-
+	    synchronized (sb) {
+		String dirPath = _package == null ? "" : _package;
+		if (_package != null && !_package.equals("")) {
+		    dirPath = dirPath.replace(".", File.separator);
+		    File dirs = new File(OUTPUT + File.separator + dirPath);
+		    if (!dirs.exists()) {
+			dirs.mkdirs();
+		    }
+		}
+		String modelClassName = getModelClassName(table.getName())
+			+ NAME_SUFFIX;
+		File modelFile = new File(OUTPUT + File.separator + dirPath
+			+ File.separator + modelClassName + ".java");
+		try {
+		    if (!modelFile.exists()) {
+			modelFile.createNewFile();
+		    }
+		    FileOutputStream out = new FileOutputStream(modelFile);
+		    out.write(sb.toString().getBytes());
+		    out.flush();
+		    out.close();
+		} catch (FileNotFoundException e) {
+		    e.printStackTrace();
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+		sb = new StringBuffer();
+	    }
 	}
     }
 }

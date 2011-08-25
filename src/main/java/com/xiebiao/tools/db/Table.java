@@ -5,9 +5,19 @@ import java.util.List;
 public class Table {
     private String name;
     private List<Column> columns;
+    private String comment;
 
     public String getName() {
 	return name;
+    }
+
+    public String getComment() {
+	return comment;
+    }
+
+    public void setComment(String comment) {
+	comment = comment == null ? "" : comment;
+	this.comment = comment;
     }
 
     public void setName(String name) {
