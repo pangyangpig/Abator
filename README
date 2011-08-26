@@ -7,7 +7,7 @@
 
 $ mvn clean compile jar:jar -X
 $ cd target
-Copy config.properties and mysql driver for java jar to target
+put mysql driver for java in classpath
 $ java -classpath ./db-tools-java-X.X.X.jar \
   com.xiebiao.tools.db.Creator 
   
