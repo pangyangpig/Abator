@@ -4,9 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -23,7 +20,6 @@ public class ModelClassBuilder extends ClassBuilder {
 	    + File.separator + "output";
     private Table table;
     private StringBuffer sb;
-    private Map<String, String> fields;
 
     public ModelClassBuilder(String _package) {
 	tab = "    ";
@@ -41,7 +37,6 @@ public class ModelClassBuilder extends ClassBuilder {
 
     public ModelClassBuilder from(Table table) {
 	sb = new StringBuffer();
-	fields = new HashMap<String, String>();
 	if (table == null || table.getName().equals("")) {
 	    throw new java.lang.IllegalArgumentException();
 	}
@@ -62,10 +57,8 @@ public class ModelClassBuilder extends ClassBuilder {
 	    return;
 	} else {
 	    for (Column c : table.getColumns()) {
-		if (c.getDataType().equals(DataType.TIME)
-			|| c.getDataType().equals(DataType.YEAR)
-			|| c.getDataType().equals(DataType.TIMESTAMP)
-			|| c.getDataType().equals(DataType.DATETIME)) {
+		if (DataType2Java.dataTypeMap.get(c.getDataType()).equals(
+			"Date")) {
 		    sb.append("import java.util.Date;\n");
 		    break;
 		}
@@ -104,87 +97,18 @@ public class ModelClassBuilder extends ClassBuilder {
 		if (c.isPrimaryKey()) {
 		    sb.append(tab + "//primary key \n");
 		}
-		switch (c.getDataType()) {
-		case TIME:
-		    sb.append(tab + "protected Date " + name + ";//"
-			    + c.getComment() + "\n");
-		    fields.put(this.getCamelName(c.getName()), "Date");
-		    break;
-		case YEAR:
-		    sb.append(tab + "protected Date " + name + ";//"
-			    + c.getComment() + "\n");
-		    fields.put(this.getCamelName(c.getName()), "Date");
-		    break;
-		case TIMESTAMP:
-		    sb.append(tab + "protected Date " + name + ";//"
-			    + c.getComment() + "\n");
-		    fields.put(this.getCamelName(c.getName()), "Date");
-		    break;
-		case DATETIME:
-		    sb.append(tab + "protected Date " + name + ";//"
-			    + c.getComment() + "\n");
-		    fields.put(this.getCamelName(c.getName()), "Date");
-		    break;
-		case DOUBLE:
-		    sb.append(tab + "protected double " + name + ";//"
-			    + c.getComment() + "\n");
-		    fields.put(this.getCamelName(c.getName()), "double");
-		    break;
-		case FLOAT:
-		    sb.append(tab + "protected float " + name + ";//"
-			    + c.getComment() + "\n");
-		    fields.put(this.getCamelName(c.getName()), "float");
-		    break;
-		case CHAR:
-		    sb.append(tab + "protected String " + name + ";//"
-			    + c.getComment() + "\n");
-		    fields.put(this.getCamelName(c.getName()), "String");
-		    break;
-		case VARCHAR:
-		    sb.append(tab + "protected String " + name + ";//"
-			    + c.getComment() + "\n");
-		    fields.put(this.getCamelName(c.getName()), "String");
-		    break;
-		case INT:
-		    sb.append(tab + "protected int " + name + ";//"
-			    + c.getComment() + "\n");
-		    fields.put(this.getCamelName(c.getName()), "int");
-		    break;
-		case TINYINT:
-		    sb.append(tab + "protected int " + name + ";//"
-			    + c.getComment() + "\n");
-		    fields.put(this.getCamelName(c.getName()), "int");
-		    break;
-		case BIGINT:
-		    sb.append(tab + "protected int " + name + ";//"
-			    + c.getComment() + "\n");
-		    fields.put(this.getCamelName(c.getName()), "int");
-		    break;
-		case TEXT:
-		    sb.append(tab + "protected String " + name + ";//"
-			    + c.getComment() + "\n");
-		    fields.put(this.getCamelName(c.getName()), "String");
-		    break;
-		case TINYTEXT:
-		    sb.append(tab + "protected String " + name + ";//"
-			    + c.getComment() + "\n");
-		    fields.put(this.getCamelName(c.getName()), "String");
-		    break;
-		case LONGTEXT:
-		    sb.append(tab + "protected String " + name + ";//"
-			    + c.getComment() + "\n");
-		    fields.put(this.getCamelName(c.getName()), "String");
-		    break;
-		}
+		sb.append(tab + "protected "
+			+ DataType2Java.dataTypeMap.get(c.getDataType()) + " "
+			+ name + ";\n");
 	    }
 	}
     }
 
     protected void buildSetterGetter() {
 	sb.append("\n");
-	Iterator<String> keys = fields.keySet().iterator();
-	while (keys.hasNext()) {
-	    String field = (String) keys.next();
+	Set<Column> columns = table.getColumns();
+	for (Column c : columns) {
+	    String field = this.getCamelName(c.getName());
 	    String _field = field;
 	    if (JavaKeyWord.isJavaKeyWord(field)) {
 		_field = "_" + field;
@@ -194,20 +118,24 @@ public class ModelClassBuilder extends ClassBuilder {
 		    tab + "public void set"
 			    + field.substring(0, 1).toUpperCase()
 			    + field.substring(1, field.length()) + "("
-			    + fields.get(field) + " " + _field + ")")
-		    .append("{\n")
+			    + DataType2Java.dataTypeMap.get(c.getDataType())
+			    + " " + _field + ")")
+		    .append(" {\n")
 		    .append(tab + tab + "this." + _field + " = " + _field
 			    + ";\n").append(tab + "}\n");
 	    sb.append("\n");
+	    sb.append(tab + "/**\n");
+	    sb.append(tab + " * " + c.getComment() + "\n");
+	    sb.append(tab + " */\n");
 	    sb.append(
-		    tab + "public " + fields.get(field) + " get"
-			    + field.substring(0, 1).toUpperCase()
+		    tab + "public "
+			    + DataType2Java.dataTypeMap.get(c.getDataType())
+			    + " get" + field.substring(0, 1).toUpperCase()
 			    + field.substring(1, field.length()) + "()")
-		    .append("{\n").append(tab)
+		    .append(" {\n").append(tab)
 		    .append(tab + "return this." + _field + ";\n")
 		    .append(tab + "}\n");
 	}
-
     }
 
     protected void buildClassEnd() {

@@ -14,21 +14,21 @@ public class ModelClassBuilderTest extends BaseTestCase {
     public void testCreate() throws Exception {
 	Column name = new Column();
 	name.setName("name");
-	name.setDataType(DataType.VARCHAR);
+	name.setDataType("varchar");
 
 	Column year = new Column();
 	year.setName("date");
-	year.setDataType(DataType.YEAR);
+	year.setDataType("year");
 
 	Column datetime = new Column();
 	datetime.setName("date");
-	datetime.setDataType(DataType.DATETIME);
+	datetime.setDataType("datetime");
 
 	Column _float = new Column();
 	_float.setName("float");
-	_float.setDataType(DataType.FLOAT);
+	_float.setDataType("float");
 	_float.setComment("字段说明");
-	
+
 	Set<Column> columns = new HashSet<Column>();
 	columns.add(name);
 	columns.add(year);

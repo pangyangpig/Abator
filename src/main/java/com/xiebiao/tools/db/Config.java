@@ -94,8 +94,8 @@ public class Config {
 	    tables = new ArrayList<Table>();
 	    while (rs.next()) {
 		Table table = new Table();
-		table.setName(rs.getString("TABLE_NAME"));
-		table.setComment(rs.getString("TABLE_COMMENT"));
+		table.setName(rs.getString("TABLE_NAME").trim());
+		table.setComment(rs.getString("TABLE_COMMENT").trim());
 		table.setColumns(getColumns(table));
 		tables.add(table);
 	    }
@@ -121,18 +121,22 @@ public class Config {
 	    boolean hasPriKey = false;
 	    while (rs.next()) {
 		Column column = new Column();
-		column.setName(rs.getString("COLUMN_NAME"));
-		column.setDataType(DataType.to(rs.getString("DATA_TYPE")));
+		column.setName(rs.getString("COLUMN_NAME").trim());
+		column.setDataType(rs.getString("DATA_TYPE"));
+		if(table.getName().equals("digu_single_kitchen_video")){
+		System.out.println(table.getName() + "  " + column.getName()
+			+ "  " + column.getDataType());
+		}
 		if (rs.getString("COLUMN_KEY").equalsIgnoreCase("PRI")) {
 		    column.setPrimaryKey(true);
 		    hasPriKey = true;
 		}
-		column.setComment(rs.getString("COLUMN_COMMENT"));
+		column.setComment(rs.getString("COLUMN_COMMENT").trim());
 		columns.add(column);
 	    }
 	    if (!hasPriKey) {
-		System.out.println("WARN: Table=" + table.getName()
-			+ " must have PRI KEY. ");
+		System.out.println("WARN: table(" + table.getName()
+			+ ") must have PRIMARY KEY. ");
 	    }
 	    close(connection);
 	} catch (SQLException e) {

@@ -43,13 +43,12 @@ public class Column {
 		.append(",dataType=" + dataType + "]");
 	return sb.toString();
     }
-
-    public DataType getDataType() {
-	return dataType;
+    public String getDataType() {
+        return dataType;
     }
 
-    public void setDataType(DataType dataType) {
-	this.dataType = dataType;
+    public void setDataType(String dataType) {
+        this.dataType = dataType;
     }
 
     public boolean isPrimaryKey() {
@@ -66,7 +65,7 @@ public class Column {
     }
 
     private String name;
-    private DataType dataType;
+    private String dataType;
     private boolean primaryKey;
     private String comment;
 

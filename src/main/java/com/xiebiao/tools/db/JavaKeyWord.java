@@ -20,4 +20,19 @@ public enum JavaKeyWord {
 	}
 	return false;
     }
+
+    public static String toString(JavaKeyWord javaKeyWord) {
+	for (JavaKeyWord jkw : JavaKeyWord.values()) {
+	    if (javaKeyWord.equals(jkw)) {
+		if (javaKeyWord.equals(STRING)) {
+		    return STRING.name().substring(0, 1).toUpperCase()
+			    + STRING.name()
+				    .substring(1, STRING.name().length());
+		} else {
+		    return javaKeyWord.name().toLowerCase();
+		}
+	    }
+	}
+	return null;
+    }
 }
