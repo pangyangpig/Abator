@@ -1,6 +1,5 @@
 package com.xiebiao.tools.db;
 
-import java.util.List;
 import java.util.Set;
 
 public class Table {

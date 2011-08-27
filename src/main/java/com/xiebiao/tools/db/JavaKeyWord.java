@@ -1,7 +1,13 @@
 package com.xiebiao.tools.db;
 
+/**
+ * java数据类型关键字.
+ * 
+ * @author xiaog
+ * 
+ */
 public enum JavaKeyWord {
-    BYTE, INT, FLOAT, DOUBLE, BOOLEAN, STRING, LONG;
+    SHORT, BYTE, CHAR, INT, FLOAT, DOUBLE, BOOLEAN, STRING, LONG;
     public static boolean isJavaKeyWord(String kw) {
 	if (kw.toUpperCase().equals(BYTE.name())) {
 	    return true;
@@ -14,6 +20,10 @@ public enum JavaKeyWord {
 	} else if (kw.toUpperCase().equals(BOOLEAN.name())) {
 	    return true;
 	} else if (kw.toUpperCase().equals(STRING.name())) {
+	    return true;
+	} else if (kw.toUpperCase().equals(SHORT.name())) {
+	    return true;
+	} else if (kw.toUpperCase().equals(CHAR.name())) {
 	    return true;
 	} else if (kw.toUpperCase().equals(LONG.name())) {
 	    return true;
