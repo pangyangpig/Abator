@@ -1,6 +1,6 @@
 package com.xiebiao.tools.db;
 
-public class ClassBuilder {
+public abstract class ClassBuilder {
     protected void buildPackage() {
 
     }
@@ -11,6 +11,9 @@ public class ClassBuilder {
 
     protected void buildAnnotate() {
 
+    }
+
+    protected void buildStructure() {
     }
 
     protected void buildClassName() {
@@ -35,6 +38,7 @@ public class ClassBuilder {
 	buildAnnotate();
 	buildClassName();
 	buildField();
+	buildStructure();
 	buildSetterGetter();
 	buildClassEnd();
     }

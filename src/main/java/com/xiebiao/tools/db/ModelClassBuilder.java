@@ -35,6 +35,18 @@ public class ModelClassBuilder extends ClassBuilder {
 	}
     }
 
+    public ModelClassBuilder() {
+	this(null);
+    }
+
+    public void buildStructure() {
+	sb.append("\n");
+	sb.append(tab + "public "
+		+ this.getModelClassName(table.getName() + NAME_SUFFIX)
+		+ "() {\n");
+	sb.append(tab + "}\n");
+    }
+
     public ModelClassBuilder from(Table table) {
 	sb = new StringBuffer();
 	if (table == null || table.getName().equals("")) {
@@ -45,14 +57,16 @@ public class ModelClassBuilder extends ClassBuilder {
     }
 
     protected void buildPackage() {
-	if (this._package != null) {
+	if (this._package != null && !this._package.equals("")) {
 	    sb.append("package " + this._package + ";");
 	    sb.append("\n");
 	}
     }
 
     protected void buildImport() {
-	sb.append("\n");
+	if (sb.length() != 0) {
+	    sb.append("\n");
+	}
 	if (table.getColumns() == null) {
 	    return;
 	} else {

@@ -8,7 +8,7 @@ public class ModelClassBuilderTest extends BaseTestCase {
 
     protected void setUp() throws Exception {
 	// super.setUp();
-	modelClassBuilder = new ModelClassBuilder("com.xiebiao.db");
+	modelClassBuilder = new ModelClassBuilder();
     }
 
     public void testCreate() throws Exception {
