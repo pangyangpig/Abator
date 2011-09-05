@@ -20,8 +20,9 @@ public class ModelClassBuilder extends ClassBuilder {
 	    + File.separator + "output";
     private Table table;
     private StringBuffer sb;
+    private Config config;
 
-    public ModelClassBuilder(String _package) {
+    private ModelClassBuilder(String _package) {
 	tab = "    ";
 	if (_package == null || _package.equals("")) {
 	    System.out.println("WARN: package must be setting. ");
@@ -35,8 +36,9 @@ public class ModelClassBuilder extends ClassBuilder {
 	}
     }
 
-    public ModelClassBuilder() {
-	this(null);
+    public ModelClassBuilder(Config config) {
+	this(config.getPackage());
+	this.config = config;
     }
 
     public void buildStructure() {
@@ -91,8 +93,15 @@ public class ModelClassBuilder extends ClassBuilder {
 
     protected void buildClassName() {
 	sb.append("\n");
-	sb.append("public class "
-		+ this.getModelClassName(table.getName() + NAME_SUFFIX) + "{\n");
+	if (config.getExtends() != null) {
+	    sb.append("public class "
+		    + this.getModelClassName(table.getName() + NAME_SUFFIX)
+		    + " extends " + config.getExtends() + " {\n");
+	} else {
+	    sb.append("public class "
+		    + this.getModelClassName(table.getName() + NAME_SUFFIX)
+		    + " {\n");
+	}
     }
 
     protected void buildField() {
@@ -157,6 +166,9 @@ public class ModelClassBuilder extends ClassBuilder {
     }
 
     public void create() {
+	if (sb == null) {
+	    throw new java.lang.InstantiationError();
+	}
 	super.build();
 	String dirPath = _package == null ? "" : _package;
 	if (_package != null && !_package.equals("")) {

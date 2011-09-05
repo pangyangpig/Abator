@@ -5,10 +5,12 @@ import java.util.Set;
 
 public class ModelClassBuilderTest extends BaseTestCase {
     private ModelClassBuilder modelClassBuilder;
+    private Config config;
 
     protected void setUp() throws Exception {
 	// super.setUp();
-	modelClassBuilder = new ModelClassBuilder();
+	config = new Config();
+	modelClassBuilder = new ModelClassBuilder(config);
     }
 
     public void testCreate() throws Exception {
@@ -35,7 +37,7 @@ public class ModelClassBuilderTest extends BaseTestCase {
 	columns.add(datetime);
 	columns.add(_float);
 	Table table = new Table();
-	table.setName("AA");
+	table.setName("Person");
 	table.setColumns(columns);
 	table.setComment("这是表说明");
 	modelClassBuilder.from(table).create();

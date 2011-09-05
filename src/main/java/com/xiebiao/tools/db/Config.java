@@ -19,6 +19,8 @@ public class Config {
     public static final String INFORMATION_SCHEMA = "information_schema";
     private Properties properties;
     private static final String CONFIG_FILE = "config.properties";
+    private String _package;
+    private String _extends;
 
     public Config() {
 	if (System.getProperty("db.host") == null
@@ -31,6 +33,8 @@ public class Config {
 		properties.load(new FileInputStream(
 			new File(System.getProperty("user.dir")
 				+ File.separator + CONFIG_FILE)));
+		this._package = properties.getProperty("package");
+		this._extends = properties.getProperty("extends");
 	    } catch (FileNotFoundException e) {
 		e.printStackTrace();
 	    } catch (IOException e) {
@@ -81,6 +85,14 @@ public class Config {
 	}
     }
 
+    public String getPackage() {
+	return this._package;
+    }
+
+    public String getExtends() {
+	return this._extends;
+    }
+
     public List<Table> getTables() {
 	Connection connection = this.getConnection();
 	String sql = "select * from TABLES where TABLE_SCHEMA=?";
@@ -123,9 +135,9 @@ public class Config {
 		Column column = new Column();
 		column.setName(rs.getString("COLUMN_NAME").trim());
 		column.setDataType(rs.getString("DATA_TYPE"));
-		if(table.getName().equals("digu_single_kitchen_video")){
-		System.out.println(table.getName() + "  " + column.getName()
-			+ "  " + column.getDataType());
+		if (table.getName().equals("digu_single_kitchen_video")) {
+		    System.out.println(table.getName() + "  "
+			    + column.getName() + "  " + column.getDataType());
 		}
 		if (rs.getString("COLUMN_KEY").equalsIgnoreCase("PRI")) {
 		    column.setPrimaryKey(true);
