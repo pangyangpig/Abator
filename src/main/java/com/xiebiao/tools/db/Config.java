@@ -19,6 +19,7 @@ public class Config {
     public static final String INFORMATION_SCHEMA = "information_schema";
     private Properties properties;
     private static final String CONFIG_FILE = "config.properties";
+
     private String _package;
     private String _extends;
 
@@ -91,6 +92,14 @@ public class Config {
 
     public String getExtends() {
 	return this._extends;
+    }
+
+    public void setPackage(String _package) {
+	this._package = _package;
+    }
+
+    public void setExtends(String _extends) {
+	this._extends = _extends;
     }
 
     public List<Table> getTables() {
