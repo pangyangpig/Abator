@@ -40,6 +40,6 @@ public class ModelClassBuilderTest extends BaseTestCase {
 	table.setName("Person");
 	table.setColumns(columns);
 	table.setComment("这是表说明");
-	modelClassBuilder.from(table).create();
+	modelClassBuilder.from(table).build();
     }
 }

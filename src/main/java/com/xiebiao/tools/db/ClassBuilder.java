@@ -32,7 +32,7 @@ public abstract class ClassBuilder {
 
     }
 
-    public final void build() {
+    public final void doBuild() {
 	buildPackage();
 	buildImport();
 	buildAnnotate();

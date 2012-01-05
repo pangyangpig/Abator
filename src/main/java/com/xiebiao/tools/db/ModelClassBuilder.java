@@ -165,11 +165,11 @@ public class ModelClassBuilder extends ClassBuilder {
 	sb.append("\n}");
     }
 
-    public void create() {
+    public void build() {
 	if (sb == null) {
 	    throw new java.lang.InstantiationError();
 	}
-	super.build();
+	super.doBuild();
 	String dirPath = _package == null ? "" : _package;
 	if (_package != null && !_package.equals("")) {
 	    dirPath = dirPath.replace(".", File.separator);

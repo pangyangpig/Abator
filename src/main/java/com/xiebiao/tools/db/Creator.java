@@ -9,7 +9,7 @@ public final class Creator {
 	Config c = new Config();
 	ModelClassBuilder modelClassBuilder = new ModelClassBuilder(c);
 	for (Table table : c.getTables()) {
-	    modelClassBuilder.from(table).create();
+	    modelClassBuilder.from(table).build();
 	}
     }
 

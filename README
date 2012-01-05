@@ -8,7 +8,7 @@
 $ mvn clean compile jar:jar -X
 $ cd target
 put mysql driver for java in classpath
-$ java -classpath ./db-tools-java-X.X.X.jar \
+$ java -classpath ./domain-generator-X.X.X.jar \
   com.xiebiao.tools.db.Creator 
   
 lookup output current directory 
