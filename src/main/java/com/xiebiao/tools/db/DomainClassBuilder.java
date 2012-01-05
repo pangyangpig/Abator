@@ -187,7 +187,6 @@ public class DomainClassBuilder extends ClassBuilder {
 		modelFile.createNewFile();
 	    }
 	    FileOutputStream out = new FileOutputStream(modelFile);
-	    System.out.println(sb.toString());
 	    out.write(sb.toString().getBytes());
 	    out.flush();
 	    out.close();
@@ -196,6 +195,7 @@ public class DomainClassBuilder extends ClassBuilder {
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
+	System.out.println("build success!");
 	// Thread thread = new Thread(new CreateFiles());
 	// thread.start();
     }

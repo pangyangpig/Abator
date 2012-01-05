@@ -76,14 +76,12 @@ public class Config {
 
     private Connection getConnection() {
 	try {
-	    System.out.println(properties.getProperty("db.port"));
 	    String jdbcUrl = "jdbc:mysql://"
 		    + properties.getProperty("db.host") + ":"
 		    + properties.getProperty("db.port") + "/"
 		    + INFORMATION_SCHEMA + "?user="
 		    + properties.getProperty("db.user") + "&password="
 		    + properties.getProperty("db.password");
-	    System.out.println(jdbcUrl);
 	    Connection connection = DriverManager.getConnection(jdbcUrl);
 	    if (connection == null) {
 		System.out.println("Can't get connection");
