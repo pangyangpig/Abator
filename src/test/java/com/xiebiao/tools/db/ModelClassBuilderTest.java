@@ -4,13 +4,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ModelClassBuilderTest extends BaseTestCase {
-    private ModelClassBuilder modelClassBuilder;
+    private DomainClassBuilder modelClassBuilder;
     private Config config;
 
     protected void setUp() throws Exception {
 	// super.setUp();
 	config = new Config();
-	modelClassBuilder = new ModelClassBuilder(config);
+	modelClassBuilder = new DomainClassBuilder(config);
     }
 
     public void testCreate() throws Exception {

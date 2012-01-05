@@ -7,7 +7,7 @@ public final class Creator {
      */
     public static void main(String[] args) {
 	Config c = new Config();
-	ModelClassBuilder modelClassBuilder = new ModelClassBuilder(c);
+	DomainClassBuilder modelClassBuilder = new DomainClassBuilder(c);
 	for (Table table : c.getTables()) {
 	    modelClassBuilder.from(table).build();
 	}

@@ -71,9 +71,13 @@ public class Config {
 		    + properties.getProperty("db.user") + "&password="
 		    + properties.getProperty("db.password");
 	    Connection connection = DriverManager.getConnection(jdbcUrl);
+	    if (connection == null) {
+		System.out.println("Can't get connection");
+	    }
 	    return connection;
 	} catch (SQLException e) {
 	    e.printStackTrace();
+	    System.out.println(e);
 	}
 	return null;
     }

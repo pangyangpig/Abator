@@ -12,8 +12,8 @@ import java.util.Set;
  * @author xiaog
  * 
  */
-public class ModelClassBuilder extends ClassBuilder {
-    private static String NAME_SUFFIX = "Model";
+public class DomainClassBuilder extends ClassBuilder {
+    private static String NAME_SUFFIX = "Domain";
     private String _package;
     private String tab;
     private static final String OUTPUT = System.getProperty("user.dir")
@@ -22,7 +22,7 @@ public class ModelClassBuilder extends ClassBuilder {
     private StringBuffer sb;
     private Config config;
 
-    private ModelClassBuilder(String _package) {
+    private DomainClassBuilder(String _package) {
 	tab = "    ";
 	if (_package == null || _package.equals("")) {
 	    System.out.println("WARN: package must be setting. ");
@@ -36,7 +36,7 @@ public class ModelClassBuilder extends ClassBuilder {
 	}
     }
 
-    public ModelClassBuilder(Config config) {
+    public DomainClassBuilder(Config config) {
 	this(config.getPackage());
 	this.config = config;
     }
@@ -49,7 +49,7 @@ public class ModelClassBuilder extends ClassBuilder {
 	sb.append(tab + "}\n");
     }
 
-    public ModelClassBuilder from(Table table) {
+    public DomainClassBuilder from(Table table) {
 	sb = new StringBuffer();
 	if (table == null || table.getName().equals("")) {
 	    throw new java.lang.IllegalArgumentException();
@@ -165,7 +165,7 @@ public class ModelClassBuilder extends ClassBuilder {
 	sb.append("\n}");
     }
 
-    public void build() {
+    public final void build() {
 	if (sb == null) {
 	    throw new java.lang.InstantiationError();
 	}
@@ -187,6 +187,7 @@ public class ModelClassBuilder extends ClassBuilder {
 		modelFile.createNewFile();
 	    }
 	    FileOutputStream out = new FileOutputStream(modelFile);
+	    System.out.println(sb.toString());
 	    out.write(sb.toString().getBytes());
 	    out.flush();
 	    out.close();
