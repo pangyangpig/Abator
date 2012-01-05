@@ -2,16 +2,16 @@ package com.xiebiao.tools.db;
 
 import junit.framework.TestCase;
 
-public class DbConfigTest extends TestCase {
+public class ConfigTest extends TestCase {
     private Config dbConfig;
 
     protected void setUp() throws Exception {
 	super.setUp();
-	System.setProperty("db.host", "10.10.101.21");
+	System.setProperty("db.host", "localhost");
 	System.setProperty("db.port", "3306");
-	System.setProperty("db.name", "leku_live");
+	System.setProperty("db.name", "mybatis_t");
 	System.setProperty("db.user", "root");
-	System.setProperty("db.password", "weare13G");
+	System.setProperty("db.password", "wangzhu");
 	dbConfig = new Config();
     }
 

@@ -19,16 +19,15 @@ public class Config {
     public static final String INFORMATION_SCHEMA = "information_schema";
     private Properties properties;
     private static final String CONFIG_FILE = "config.properties";
-
     private String _package;
     private String _extends;
 
     public Config() {
 	if (System.getProperty("db.host") == null
-		&& System.getProperty("db.port") == null
-		&& System.getProperty("db.name") == null
-		&& System.getProperty("db.user") == null
-		&& System.getProperty("db.password") == null) {
+		|| System.getProperty("db.port") == null
+		|| System.getProperty("db.name") == null
+		|| System.getProperty("db.user") == null
+		|| System.getProperty("db.password") == null) {
 	    properties = new Properties();
 	    try {
 		properties.load(new FileInputStream(
@@ -43,7 +42,7 @@ public class Config {
 	    }
 	} else {
 	    String host = System.getProperty("db.host");
-	    int port = Integer.valueOf(System.getProperty("db.port"));
+	    String port = System.getProperty("db.port");
 	    String name = System.getProperty("db.name");
 	    String user = System.getProperty("db.user");
 	    String password = System.getProperty("db.password");
@@ -62,14 +61,29 @@ public class Config {
 	}
     }
 
+    public Config(String configFile) {
+	properties = new Properties();
+	try {
+	    properties.load(new FileInputStream(new File(configFile)));
+	    this._package = properties.getProperty("package");
+	    this._extends = properties.getProperty("extends");
+	} catch (FileNotFoundException e) {
+	    e.printStackTrace();
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+    }
+
     private Connection getConnection() {
 	try {
+	    System.out.println(properties.getProperty("db.port"));
 	    String jdbcUrl = "jdbc:mysql://"
 		    + properties.getProperty("db.host") + ":"
 		    + properties.getProperty("db.port") + "/"
 		    + INFORMATION_SCHEMA + "?user="
 		    + properties.getProperty("db.user") + "&password="
 		    + properties.getProperty("db.password");
+	    System.out.println(jdbcUrl);
 	    Connection connection = DriverManager.getConnection(jdbcUrl);
 	    if (connection == null) {
 		System.out.println("Can't get connection");

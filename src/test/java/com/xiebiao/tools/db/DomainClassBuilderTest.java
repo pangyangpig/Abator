@@ -3,7 +3,7 @@ package com.xiebiao.tools.db;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ModelClassBuilderTest extends BaseTestCase {
+public class DomainClassBuilderTest extends BaseTestCase {
     private DomainClassBuilder modelClassBuilder;
     private Config config;
 
@@ -13,7 +13,7 @@ public class ModelClassBuilderTest extends BaseTestCase {
 	modelClassBuilder = new DomainClassBuilder(config);
     }
 
-    public void testCreate() throws Exception {
+    public void testBuild() throws Exception {
 	Column name = new Column();
 	name.setName("name");
 	name.setDataType("varchar");
@@ -40,6 +40,6 @@ public class ModelClassBuilderTest extends BaseTestCase {
 	table.setName("Person");
 	table.setColumns(columns);
 	table.setComment("这是表说明");
-	modelClassBuilder.from(table).build();
+	//modelClassBuilder.from(table).build();
     }
 }
