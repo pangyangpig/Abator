@@ -4,6 +4,9 @@
 	<groupId>com.xiebiao.tools</groupId>
 	<artifactId>domain-generator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+        <properties>
+                <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        </properties>
 	<dependencies>
 		<dependency>
 			<groupId>mysql</groupId>
@@ -34,6 +37,7 @@
 				<configuration>
 					<target>1.6</target>
 					<source>1.6</source>
+					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
 			<plugin>
