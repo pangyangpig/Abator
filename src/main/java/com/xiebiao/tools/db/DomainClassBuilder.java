@@ -107,6 +107,7 @@ public class DomainClassBuilder extends ClassBuilder {
 
 	protected void buildField() {
 		sb.append("\n");
+		sb.append(tab + "private static final long serialVersionUID = 1L;\n");
 		Set<Column> columns = table.getColumns();
 		if (columns == null) {
 			System.err.println("WARN: Table=" + table.getName()
