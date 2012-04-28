@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -20,6 +22,7 @@ public class DomainClassBuilder extends ClassBuilder {
 	private Table table;
 	private StringBuffer sb;
 	private Config config;
+	private List<String> names = new ArrayList<String>();
 
 	private DomainClassBuilder(String _package) {
 		tab = "    ";
@@ -125,8 +128,10 @@ public class DomainClassBuilder extends ClassBuilder {
 				sb.append(tab + "protected "
 						+ DataType2Java.dataTypeMap.get(c.getDataType()) + " "
 						+ name + ";\n");
+				names.add(name);
 			}
 		}
+
 	}
 
 	protected void buildSetterGetter() {
@@ -182,8 +187,9 @@ public class DomainClassBuilder extends ClassBuilder {
 		}
 		String modelClassName = getModelClassName(table.getName())
 				+ this.config.getDomainSuffix();
-		File modelFile = new File(OUTPUT + File.separator + dirPath
-				+ File.separator + modelClassName + ".java");
+		String fileName = OUTPUT + File.separator + dirPath + File.separator
+				+ modelClassName + ".java";
+		File modelFile = new File(fileName);
 		try {
 			if (!modelFile.exists()) {
 				modelFile.createNewFile();
@@ -197,7 +203,7 @@ public class DomainClassBuilder extends ClassBuilder {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("build success!");
+		System.out.println(modelClassName + ".java ... build success!");
 		// Thread thread = new Thread(new CreateFiles());
 		// thread.start();
 	}
@@ -220,5 +226,18 @@ public class DomainClassBuilder extends ClassBuilder {
 		name = name.substring(0, 1).toLowerCase()
 				+ name.substring(1, name.length());
 		return name;
+	}
+
+	@Override
+	protected void buildToString() {
+		sb.append("\n");
+		sb.append(tab + "public String toString(){\n");
+		sb.append(tab + tab + "StringBuilder sb = new StringBuilder();\n");
+		for (String name : names) {
+			sb.append(tab + tab + "sb.append(this." + name + ");\n");
+		}
+		sb.append(tab + tab + "return sb.toString();\n");
+		sb.append(tab + "}");
+		this.names.clear();
 	}
 }
