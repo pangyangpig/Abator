@@ -25,5 +25,6 @@ public class DataType2Java {
 	dataTypeMap.put("tinytext", "String");
 	dataTypeMap.put("mediumtext", "String");
 	dataTypeMap.put("longtext", "String");
+	dataTypeMap.put("decimal", "double");
     }
 }
