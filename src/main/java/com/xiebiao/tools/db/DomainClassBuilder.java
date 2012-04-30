@@ -234,7 +234,7 @@ public class DomainClassBuilder extends ClassBuilder {
 		sb.append(tab + "public String toString(){\n");
 		sb.append(tab + tab + "StringBuilder sb = new StringBuilder();\n");
 		for (String name : names) {
-			sb.append(tab + tab + "sb.append(this." + name + ");\n");
+			sb.append(tab + tab + "sb.append(\""+name+":\"+this." + name + "+\" \");\n");
 		}
 		sb.append(tab + tab + "return sb.toString();\n");
 		sb.append(tab + "}");
