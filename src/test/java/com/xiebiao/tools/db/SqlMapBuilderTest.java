@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class SqlMapBuilderTest extends BaseTestCase {
-	private SqlMapBuilder sqlMapBuilder;
 
 	public void test_build() {
 		Column name = new Column();
@@ -12,7 +11,7 @@ public class SqlMapBuilderTest extends BaseTestCase {
 		name.setDataType("varchar");
 
 		Column year = new Column();
-		year.setName("date");
+		year.setName("user_name");
 		year.setDataType("year");
 
 		Column datetime = new Column();
@@ -30,9 +29,11 @@ public class SqlMapBuilderTest extends BaseTestCase {
 		columns.add(datetime);
 		columns.add(_float);
 		Table table = new Table();
+		table.setAlias("Person");
 		table.setName("person");
+		table.setPriKey("id");
 		table.setColumns(columns);
 		table.setComment("这是表说明");
-		System.out.print(SqlMapBuilder.from(table).build());
+		System.out.print(SqlMapBuilder.from(table,"").build());
 	}
 }

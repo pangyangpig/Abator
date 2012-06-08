@@ -74,7 +74,7 @@ public class DaoImplClassBuilder extends DaoClassBuilder {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		String full_name = _package + "." + modelClassName + ".java";
+		String full_name = _package + "." + modelClassName;
 		System.out.println(full_name + " ... build success!");
 		return full_name;
 	}

@@ -19,6 +19,7 @@ public class Config {
 	public static final String INFORMATION_SCHEMA = "information_schema";
 	private Properties properties;
 	private static final String CONFIG_FILE = "config.properties";
+	private static final String COLUMNS_SQL = "select * from COLUMNS where TABLE_SCHEMA=? and TABLE_NAME=?";
 
 	public Config() {
 		properties = new Properties();
@@ -113,6 +114,7 @@ public class Config {
 				table.setName(rs.getString("TABLE_NAME").trim());
 				table.setComment(rs.getString("TABLE_COMMENT").trim());
 				table.setColumns(getColumns(table));
+				table.setPriKey(getKey(table));
 				tables.add(table);
 			}
 			close(connection);
@@ -122,13 +124,34 @@ public class Config {
 		return tables;
 	}
 
+	private String getKey(Table table) {
+		Connection connection = this.getConnection();
+		String key = "";
+		try {
+			PreparedStatement preparedStatement = connection
+					.prepareStatement(COLUMNS_SQL);
+			preparedStatement.setString(1,
+					this.properties.getProperty("db.name"));
+			preparedStatement.setString(2, table.getName());
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()) {
+				if (rs.getString("COLUMN_KEY").equalsIgnoreCase("PRI")) {
+					key = rs.getString("COLUMN_NAME").trim();
+				}
+			}
+			close(connection);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return key;
+	}
+
 	public Set<Column> getColumns(Table table) {
 		Connection connection = this.getConnection();
-		String sql = "select * from COLUMNS where TABLE_SCHEMA=? and TABLE_NAME=?";
 		Set<Column> columns = null;
 		try {
 			PreparedStatement preparedStatement = connection
-					.prepareStatement(sql);
+					.prepareStatement(COLUMNS_SQL);
 			preparedStatement.setString(1,
 					this.properties.getProperty("db.name"));
 			preparedStatement.setString(2, table.getName());
