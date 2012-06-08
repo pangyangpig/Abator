@@ -3,17 +3,19 @@ package com.xiebiao.tools.db;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DomainClassBuilderTest extends BaseTestCase {
-	private DomainClassBuilder modelClassBuilder;
+public class DaoClassBuilderTest extends BaseTestCase {
+	private DaoClassBuilder daoClassBuilder;
 	private Config config;
 
 	protected void setUp() throws Exception {
 		// super.setUp();
 		config = new Config();
-		modelClassBuilder = new DomainClassBuilder(config);
+		config.getProperties().put("domain.package", "com.xiebiao.domain");
+		config.getProperties().put("dao.package", "com.xiebiao.dao");
+		daoClassBuilder = new DaoClassBuilder(config);
 	}
 
-	public void testBuild() throws Exception {
+	public void test_build() {
 		Column name = new Column();
 		name.setName("name");
 		name.setDataType("varchar");
@@ -40,6 +42,6 @@ public class DomainClassBuilderTest extends BaseTestCase {
 		table.setName("Person");
 		table.setColumns(columns);
 		table.setComment("这是表说明");
-		modelClassBuilder.from(table).build();
+		daoClassBuilder.from(table).build();
 	}
 }

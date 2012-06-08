@@ -3,17 +3,10 @@ package com.xiebiao.tools.db;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DomainClassBuilderTest extends BaseTestCase {
-	private DomainClassBuilder modelClassBuilder;
-	private Config config;
+public class SqlMapBuilderTest extends BaseTestCase {
+	private SqlMapBuilder sqlMapBuilder;
 
-	protected void setUp() throws Exception {
-		// super.setUp();
-		config = new Config();
-		modelClassBuilder = new DomainClassBuilder(config);
-	}
-
-	public void testBuild() throws Exception {
+	public void test_build() {
 		Column name = new Column();
 		name.setName("name");
 		name.setDataType("varchar");
@@ -37,9 +30,9 @@ public class DomainClassBuilderTest extends BaseTestCase {
 		columns.add(datetime);
 		columns.add(_float);
 		Table table = new Table();
-		table.setName("Person");
+		table.setName("person");
 		table.setColumns(columns);
 		table.setComment("这是表说明");
-		modelClassBuilder.from(table).build();
+		System.out.print(SqlMapBuilder.from(table).build());
 	}
 }

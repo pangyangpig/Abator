@@ -19,24 +19,19 @@ public class Config {
 	public static final String INFORMATION_SCHEMA = "information_schema";
 	private Properties properties;
 	private static final String CONFIG_FILE = "config.properties";
-	private String _package;
-	private String _extends;
-	private String _domainSuffix = "";
 
 	public Config() {
+		properties = new Properties();
 		if (System.getProperty("db.host") == null
 				|| System.getProperty("db.port") == null
 				|| System.getProperty("db.name") == null
 				|| System.getProperty("db.user") == null
 				|| System.getProperty("db.password") == null) {
-			properties = new Properties();
+
 			try {
 				properties.load(new FileInputStream(
 						new File(System.getProperty("user.dir")
 								+ File.separator + CONFIG_FILE)));
-				this._package = properties.getProperty("package");
-				this._extends = properties.getProperty("extends");
-				this._domainSuffix = properties.getProperty("domain.suffix");
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -67,8 +62,6 @@ public class Config {
 		properties = new Properties();
 		try {
 			properties.load(new FileInputStream(new File(configFile)));
-			this._package = properties.getProperty("package");
-			this._extends = properties.getProperty("extends");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -102,22 +95,6 @@ public class Config {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public String getPackage() {
-		return this._package;
-	}
-
-	public String getExtends() {
-		return this._extends;
-	}
-
-	public void setPackage(String _package) {
-		this._package = _package;
-	}
-
-	public void setExtends(String _extends) {
-		this._extends = _extends;
 	}
 
 	public List<Table> getTables() {
@@ -184,11 +161,4 @@ public class Config {
 		return properties;
 	}
 
-	public String getDomainSuffix() {
-		return _domainSuffix;
-	}
-
-	public void setDomainSuffix(String _domainSuffix) {
-		this._domainSuffix = _domainSuffix;
-	}
 }

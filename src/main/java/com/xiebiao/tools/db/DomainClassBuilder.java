@@ -15,21 +15,17 @@ import java.util.Set;
  * 
  */
 public class DomainClassBuilder extends ClassBuilder {
-	private String _package;
-	private String tab;
-	private static final String OUTPUT = System.getProperty("user.dir")
-			+ File.separator + "output";
-	private Table table;
-	private StringBuffer sb;
-	private Config config;
+
+	public final static String PACKAGE = "domain.package";
+	public final static String EXTENDS = "domain.extends";
+	public final static String SUFFIX = "domain.suffix";
 	private List<String> names = new ArrayList<String>();
 
-	private DomainClassBuilder(String _package) {
+	public DomainClassBuilder(String _package) {
 		tab = "    ";
 		if (_package == null || _package.equals("")) {
 			System.out.println("WARN: package must be setting. ");
 		}
-		this._package = _package;
 		File outputDir = new File(OUTPUT);
 		if (!outputDir.exists()) {
 			outputDir.mkdir();
@@ -39,8 +35,45 @@ public class DomainClassBuilder extends ClassBuilder {
 	}
 
 	public DomainClassBuilder(Config config) {
-		this(config.getPackage());
+		this(config.getProperties().getProperty(PACKAGE));
 		this.config = config;
+	}
+
+	public String build() {
+		if (sb == null) {
+			throw new java.lang.InstantiationError();
+		}
+		doBuild();
+		String _package = this.config.getProperties().getProperty(PACKAGE);
+		String dirPath = _package == null ? "" : _package;
+		if (_package != null && !_package.equals("")) {
+			dirPath = dirPath.replace(".", File.separator);
+			File dirs = new File(OUTPUT + File.separator + dirPath);
+			if (!dirs.exists()) {
+				dirs.mkdirs();
+			}
+		}
+		String modelClassName = getModelClassName(table.getName())
+				+ this.config.getProperties().getProperty(SUFFIX);
+		String fileName = OUTPUT + File.separator + dirPath + File.separator
+				+ modelClassName + ".java";
+		File modelFile = new File(fileName);
+		try {
+			if (!modelFile.exists()) {
+				modelFile.createNewFile();
+			}
+			FileOutputStream out = new FileOutputStream(modelFile);
+			out.write(sb.toString().getBytes());
+			out.flush();
+			out.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String full_name = _package + "." + modelClassName + ".java";
+		System.out.println(full_name + " ... build success!");
+		return full_name;
 	}
 
 	public void buildStructure() {
@@ -48,7 +81,8 @@ public class DomainClassBuilder extends ClassBuilder {
 		sb.append(tab
 				+ "public "
 				+ this.getModelClassName(table.getName()
-						+ this.config.getDomainSuffix()) + "() {\n");
+						+ this.config.getProperties().getProperty(SUFFIX))
+				+ "() {\n");
 		sb.append(tab + "}\n");
 	}
 
@@ -62,8 +96,10 @@ public class DomainClassBuilder extends ClassBuilder {
 	}
 
 	protected void buildPackage() {
-		if (this._package != null && !this._package.equals("")) {
-			sb.append("package " + this._package + ";");
+		if (this.config.getProperties().getProperty(PACKAGE) != null
+				&& !this.config.getProperties().getProperty(PACKAGE).equals("")) {
+			sb.append("package "
+					+ this.config.getProperties().getProperty(PACKAGE) + ";");
 			sb.append("\n");
 		}
 	}
@@ -96,15 +132,17 @@ public class DomainClassBuilder extends ClassBuilder {
 
 	protected void buildClassName() {
 		sb.append("\n");
-		if (config.getExtends() != null) {
+		if (config.getProperties().getProperty("dao.suffix") != null) {
 			sb.append("public class "
 					+ this.getModelClassName(table.getName()
-							+ this.config.getDomainSuffix()) + " extends "
-					+ config.getExtends() + " {\n");
+							+ config.getProperties().getProperty(SUFFIX))
+					+ " extends " + config.getProperties().getProperty(EXTENDS)
+					+ " {\n");
 		} else {
 			sb.append("public class "
 					+ this.getModelClassName(table.getName()
-							+ this.config.getDomainSuffix()) + " {\n");
+							+ config.getProperties().getProperty(SUFFIX))
+					+ " {\n");
 		}
 	}
 
@@ -168,73 +206,14 @@ public class DomainClassBuilder extends ClassBuilder {
 		}
 	}
 
-	protected void buildClassEnd() {
-		sb.append("\n}");
-	}
-
-	public final void build() {
-		if (sb == null) {
-			throw new java.lang.InstantiationError();
-		}
-		super.doBuild();
-		String dirPath = _package == null ? "" : _package;
-		if (_package != null && !_package.equals("")) {
-			dirPath = dirPath.replace(".", File.separator);
-			File dirs = new File(OUTPUT + File.separator + dirPath);
-			if (!dirs.exists()) {
-				dirs.mkdirs();
-			}
-		}
-		String modelClassName = getModelClassName(table.getName())
-				+ this.config.getDomainSuffix();
-		String fileName = OUTPUT + File.separator + dirPath + File.separator
-				+ modelClassName + ".java";
-		File modelFile = new File(fileName);
-		try {
-			if (!modelFile.exists()) {
-				modelFile.createNewFile();
-			}
-			FileOutputStream out = new FileOutputStream(modelFile);
-			out.write(sb.toString().getBytes());
-			out.flush();
-			out.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		System.out.println(modelClassName + ".java ... build success!");
-		// Thread thread = new Thread(new CreateFiles());
-		// thread.start();
-	}
-
-	private String getModelClassName(String name) {
-		if (name.indexOf("-") != -1 && name.indexOf("_") != -1) {
-			name.replaceAll("-", "_");
-		}
-		String[] t = name.split("_");
-		StringBuffer modelClassName = new StringBuffer();
-		for (String s : t) {
-			modelClassName.append(s.substring(0, 1).toUpperCase()).append(
-					s.substring(1, s.length()));
-		}
-		return modelClassName.toString();
-	}
-
-	private String getCamelName(String name) {
-		name = getModelClassName(name);
-		name = name.substring(0, 1).toLowerCase()
-				+ name.substring(1, name.length());
-		return name;
-	}
-
 	@Override
 	protected void buildToString() {
 		sb.append("\n");
 		sb.append(tab + "public String toString(){\n");
 		sb.append(tab + tab + "StringBuilder sb = new StringBuilder();\n");
 		for (String name : names) {
-			sb.append(tab + tab + "sb.append(\""+name+":\"+this." + name + "+\" \");\n");
+			sb.append(tab + tab + "sb.append(\"" + name + ":\"+this." + name
+					+ "+\" \");\n");
 		}
 		sb.append(tab + tab + "return sb.toString();\n");
 		sb.append(tab + "}");
