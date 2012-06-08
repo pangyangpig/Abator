@@ -193,6 +193,7 @@ public class SqlMapBuilder {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return sb.toString();
+		System.out.println(table.getName() + "SQL.xml" + " ... build success!");
+		return fileName;
 	}
 }
