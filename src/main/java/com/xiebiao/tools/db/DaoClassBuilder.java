@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import com.xiebiao.tools.util.Util;
+
 /**
  * 生成DAO接口
  * 
@@ -48,7 +50,7 @@ public class DaoClassBuilder extends ClassBuilder {
 				dirs.mkdirs();
 			}
 		}
-		String modelClassName = getModelClassName(table.getName())
+		String modelClassName = Util.getModelClassName(table.getName())
 				+ this.config.getProperties().getProperty(SUFFIX);
 		String fileName = OUTPUT + File.separator + dirPath + File.separator
 				+ modelClassName + ".java";
@@ -85,12 +87,12 @@ public class DaoClassBuilder extends ClassBuilder {
 		String _extends = config.getProperties().getProperty(EXTENDS);
 		if (config.getProperties().getProperty("dao.suffix") != null) {
 			sb.append("public interface "
-					+ this.getModelClassName(table.getName()
+					+ Util.getModelClassName(table.getName()
 							+ config.getProperties().getProperty(SUFFIX))
 					+ " extends " + _extends + " {\n");
 		} else {
 			sb.append("public class "
-					+ this.getModelClassName(table.getName()
+					+ Util.getModelClassName(table.getName()
 							+ config.getProperties().getProperty(SUFFIX))
 					+ " {\n");
 		}

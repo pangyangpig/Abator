@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.xiebiao.tools.util.Util;
+
 /**
  * 生成表对应的Model
  * 
@@ -53,7 +55,7 @@ public class DomainClassBuilder extends ClassBuilder {
 				dirs.mkdirs();
 			}
 		}
-		String modelClassName = getModelClassName(table.getName())
+		String modelClassName = Util.getModelClassName(table.getName())
 				+ this.config.getProperties().getProperty(SUFFIX);
 		String fileName = OUTPUT + File.separator + dirPath + File.separator
 				+ modelClassName + ".java";
@@ -80,7 +82,7 @@ public class DomainClassBuilder extends ClassBuilder {
 		sb.append("\n");
 		sb.append(tab
 				+ "public "
-				+ this.getModelClassName(table.getName()
+				+ Util.getModelClassName(table.getName()
 						+ this.config.getProperties().getProperty(SUFFIX))
 				+ "() {\n");
 		sb.append(tab + "}\n");
@@ -134,13 +136,13 @@ public class DomainClassBuilder extends ClassBuilder {
 		sb.append("\n");
 		if (config.getProperties().getProperty("dao.suffix") != null) {
 			sb.append("public class "
-					+ this.getModelClassName(table.getName()
+					+ Util.getModelClassName(table.getName()
 							+ config.getProperties().getProperty(SUFFIX))
 					+ " extends " + config.getProperties().getProperty(EXTENDS)
 					+ " {\n");
 		} else {
 			sb.append("public class "
-					+ this.getModelClassName(table.getName()
+					+ Util.getModelClassName(table.getName()
 							+ config.getProperties().getProperty(SUFFIX))
 					+ " {\n");
 		}
@@ -156,7 +158,7 @@ public class DomainClassBuilder extends ClassBuilder {
 			return;
 		} else {
 			for (Column c : columns) {
-				String name = getCamelName(this.getCamelName(c.getName()));
+				String name = Util.getCamelName(Util.getCamelName(c.getName()));
 				if (JavaKeyWord.isJavaKeyWord(name)) {
 					name = "_" + name;
 				}
@@ -176,7 +178,7 @@ public class DomainClassBuilder extends ClassBuilder {
 		sb.append("\n");
 		Set<Column> columns = table.getColumns();
 		for (Column c : columns) {
-			String field = this.getCamelName(c.getName());
+			String field = Util.getCamelName(c.getName());
 			String _field = field;
 			if (JavaKeyWord.isJavaKeyWord(field)) {
 				_field = "_" + field;

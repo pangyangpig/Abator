@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
+import com.xiebiao.tools.util.Util;
+
 public class Config {
 	public static final String INFORMATION_SCHEMA = "information_schema";
 	private Properties properties;
@@ -110,8 +112,8 @@ public class Config {
 			ResultSet rs = preparedStatement.executeQuery();
 			tables = new ArrayList<Table>();
 			while (rs.next()) {
-				Table table = new Table();
-				table.setName(rs.getString("TABLE_NAME").trim());
+				String tableName = rs.getString("TABLE_NAME").trim();
+				Table table = new Table(tableName);
 				table.setComment(rs.getString("TABLE_COMMENT").trim());
 				table.setColumns(getColumns(table));
 				table.setPriKey(getKey(table));

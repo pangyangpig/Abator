@@ -2,14 +2,22 @@ package com.xiebiao.tools.db;
 
 import java.util.Set;
 
+import com.xiebiao.tools.util.Util;
+
 public class Table {
 	private String name;
 	private Set<Column> columns;
 	private String comment;
 	private String priKey;
 	private String alias;
-	
+
 	public Table() {
+		comment = "";
+	}
+
+	public Table(String tableName) {
+		this.name = tableName;
+		this.alias = Util.getModelClassName(tableName);
 		comment = "";
 	}
 

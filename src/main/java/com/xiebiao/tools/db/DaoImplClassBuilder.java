@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import com.xiebiao.tools.util.Util;
+
 public class DaoImplClassBuilder extends DaoClassBuilder {
 	public final static String PACKAGE = "dao.impl.package";
 	public final static String EXTENDS = "dao.impl.extends";
@@ -30,13 +32,13 @@ public class DaoImplClassBuilder extends DaoClassBuilder {
 		String _implements = config.getProperties().getProperty(IMPLEMENTS);
 		if (config.getProperties().getProperty("dao.suffix") != null) {
 			sb.append("public class "
-					+ this.getModelClassName(table.getName()
+					+ Util.getModelClassName(table.getName()
 							+ config.getProperties().getProperty(SUFFIX))
 					+ " extends " + config.getProperties().getProperty(EXTENDS)
 					+ " implements " + _implements + " {\n");
 		} else {
 			sb.append("public class "
-					+ this.getModelClassName(table.getName()
+					+ Util.getModelClassName(table.getName()
 							+ config.getProperties().getProperty(SUFFIX))
 					+ " {\n");
 		}
@@ -56,7 +58,7 @@ public class DaoImplClassBuilder extends DaoClassBuilder {
 				dirs.mkdirs();
 			}
 		}
-		String modelClassName = getModelClassName(table.getName())
+		String modelClassName = Util.getModelClassName(table.getName())
 				+ this.config.getProperties().getProperty(SUFFIX);
 		String fileName = OUTPUT + File.separator + dirPath + File.separator
 				+ modelClassName + ".java";
