@@ -12,10 +12,24 @@ public class DaoImplClassBuilder extends DaoClassBuilder {
 	public final static String EXTENDS = "dao.impl.extends";
 	public final static String IMPLEMENTS = "dao.impl.implements";
 	public final static String SUFFIX = "dao.impl.suffix";
+	private String tab = "  ";
 
 	public DaoImplClassBuilder(Config config) {
 		super(config);
 		// TODO Auto-generated constructor stub
+	}
+
+	protected void buildField() {
+		sb.append("\n");
+		sb.append(tab + tab + "public final String NAME_SPACE = this.getClass().getName();");
+	}
+
+	protected void buildImport() {
+		if (sb.length() != 0) {
+			sb.append("\n");
+		}
+		sb.append("import com.xiebiao.mybatis.dao.BaseDao;\n");
+		sb.append("\n");
 	}
 
 	protected void buildPackage() {
@@ -25,6 +39,13 @@ public class DaoImplClassBuilder extends DaoClassBuilder {
 					+ this.config.getProperties().getProperty(PACKAGE) + ";");
 			sb.append("\n");
 		}
+	}
+
+	protected void buildToString() {
+		sb.append("\n");
+		sb.append(tab + tab + "public String getNameSpace() {\n");
+		sb.append(tab + tab + tab + tab + "return NAME_SPACE;\n");
+		sb.append(tab + tab + "}\n");
 	}
 
 	protected void buildClassName() {

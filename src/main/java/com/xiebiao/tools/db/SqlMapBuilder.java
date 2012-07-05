@@ -32,7 +32,7 @@ public class SqlMapBuilder {
 	}
 
 	public String buildDtd() {
-		sb.append("<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN \"\"http://mybatis.org/dtd/mybatis-3-mapper.dtd\">");
+		sb.append("<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN \"\n\"http://mybatis.org/dtd/mybatis-3-mapper.dtd\">");
 		sb.append("\n");
 		return sb.toString();
 	}
