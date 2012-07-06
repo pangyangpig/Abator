@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import com.xiebiao.tools.util.Util;
+
 public class SqlMapBuilder {
 	protected StringBuffer sb;
 	protected Table table;
@@ -44,17 +46,7 @@ public class SqlMapBuilder {
 		return sb.toString();
 	}
 
-	public String buildDefault() {
-		sb.append(tab);
-		String tmp = "<sql id=\"field_list\">\n";
-		for (Column column : table.getColumns()) {
-			tmp = tmp + tab + tab;
-			tmp = tmp + column.getName() + ",\n";
-		}
-		tmp = tmp.substring(0, tmp.length() - 2);
-		tmp = tmp + "\n" + tab + "</sql>\n";
-		sb.append(tmp);
-		// build condition
+	private void buildCondition() {
 		sb.append(tab);
 		sb.append("<sql id=\"condition\">\n");
 		sb.append(tab + tab + "<where>\n");
@@ -62,12 +54,14 @@ public class SqlMapBuilder {
 			sb.append(tab + tab + tab + "<if test=\"" + column.getName()
 					+ " != null\">\n");
 			sb.append(tab + tab + tab + tab + column.getName() + "=#{"
-					+ column.getName() + "}\n");
+					+ Util.getCamelName(column.getName()) + "}\n");
 			sb.append(tab + tab + tab + "</if>\n");
 		}
 		sb.append(tab + tab + "</where>\n");
 		sb.append(tab + "</sql>\n");
-		// build count
+	}
+
+	private void buildCount() {
 		sb.append(tab
 				+ "<select id=\"count\" resultType=\"int\" parameterType=\""
 				+ table.getAlias() + "\">\n");
@@ -75,32 +69,9 @@ public class SqlMapBuilder {
 		sb.append(tab + tab + "<include refid=\"table_name\" />\n");
 		sb.append(tab + tab + "<include refid=\"condition\" />\n");
 		sb.append(tab + "</select>\n");
-		// build find
-		sb.append(tab
-				+ "<select id=\"find\" parameterType=\"string\" resultType=\""
-				+ table.getAlias() + "\">\n");
-		sb.append(tab + tab + "SELECT * FROM \n");
-		sb.append(tab + tab + "<include refid=\"table_name\" /> \n");
-		sb.append(tab + tab + "WHERE " + table.getPriKey() + " = #{"
-				+ table.getPriKey() + "} \n");
-		sb.append(tab + "</select>\n");
-		// build update
-		sb.append(tab + "<update id=\"update\"> \n");
-		sb.append(tab + "UPDATE \n");
-		sb.append(tab + "<include refid=\"table_name\" />\n");
-		sb.append(tab + "SET \n");
-		tmp = "";
-		for (Column column : table.getColumns()) {
-			tmp = tmp + tab + tab;
-			tmp = tmp + column.getName() + "= #{" + column.getName() + "},\n";
-		}
-		tmp = tmp.substring(0, tmp.length() - 2);
-		sb.append(tmp + "\n");
-		sb.append(tab + tab + "WHERE " + table.getPriKey() + "=#{"
-				+ table.getPriKey() + "} \n");
+	}
 
-		sb.append(tab + "</update> \n");
-		// build insert
+	private void buildInsert(String tmp) {
 		sb.append(tab + "<insert id=\"insert\"> \n");
 		sb.append(tab + tab + "INSERT INTO \n");
 		sb.append(tab + tab + "<include refid=\"table_name\" /> \n");
@@ -120,14 +91,47 @@ public class SqlMapBuilder {
 		tmp = "";
 		for (Column column : table.getColumns()) {
 			tmp = tmp + tab + tab;
-			tmp = tmp + tab + "#{" + column.getName() + "},\n";
+			tmp = tmp + tab + "#{" + Util.getCamelName(column.getName())
+					+ "},\n";
 		}
 		tmp = tmp.substring(0, tmp.length() - 2);
 		sb.append(tmp + "\n");
 		sb.append(tab + tab + ") \n");
 		sb.append(tab + tab + "</insert> \n");
-		// build list
+	}
 
+	private void buildFind() {
+
+		sb.append(tab
+				+ "<select id=\"find\" parameterType=\"string\" resultType=\""
+				+ table.getAlias() + "\">\n");
+		sb.append(tab + tab + "SELECT * FROM \n");
+		sb.append(tab + tab + "<include refid=\"table_name\" /> \n");
+		sb.append(tab + tab + "WHERE " + table.getPriKey() + " = #{"
+				+ table.getPriKey() + "} \n");
+		sb.append(tab + "</select>\n");
+	}
+
+	private void buildUpdate(String tmp) {
+		sb.append(tab + "<update id=\"update\"> \n");
+		sb.append(tab + "UPDATE \n");
+		sb.append(tab + "<include refid=\"table_name\" />\n");
+		sb.append(tab + "SET \n");
+		tmp = "";
+		for (Column column : table.getColumns()) {
+			tmp = tmp + tab + tab;
+			tmp = tmp + column.getName() + "= #{"
+					+ Util.getCamelName(column.getName()) + "},\n";
+		}
+		tmp = tmp.substring(0, tmp.length() - 2);
+		sb.append(tmp + "\n");
+		sb.append(tab + tab + "WHERE " + table.getPriKey() + "=#{"
+				+ table.getPriKey() + "} \n");
+
+		sb.append(tab + "</update> \n");
+	}
+
+	private void buildList() {
 		sb.append(tab + "<select id=\"list\" parameterType=\""
 				+ table.getAlias() + "\" resultType=\"" + table.getAlias()
 				+ "\"> \n");
@@ -146,6 +150,24 @@ public class SqlMapBuilder {
 		sb.append(tab + "</if> \n");
 		sb.append(tab + "</select> \n");
 
+	}
+
+	public String buildDefault() {
+		sb.append(tab);
+		String tmp = "<sql id=\"field_list\">\n";
+		for (Column column : table.getColumns()) {
+			tmp = tmp + tab + tab;
+			tmp = tmp + column.getName() + ",\n";
+		}
+		tmp = tmp.substring(0, tmp.length() - 2);
+		tmp = tmp + "\n" + tab + "</sql>\n";
+		sb.append(tmp);
+		buildCondition();
+		buildCount();
+		buildFind();
+		buildUpdate(tmp);
+		buildInsert(tmp);
+		buildList();
 		return sb.toString();
 	}
 
