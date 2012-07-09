@@ -6,6 +6,7 @@
 	<version>0.0.1-SNAPSHOT</version>
         <properties>
                 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<findbugs_maven_plugin_version>2.5.1</findbugs_maven_plugin_version>
         </properties>
 	<dependencies>
 		<dependency>
@@ -19,6 +20,12 @@
 			<version>4.8.2</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>2.2.8</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<pluginManagement>
@@ -26,6 +33,7 @@
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>findbugs-maven-plugin</artifactId>
+					<version>${findbugs_maven_plugin_version}</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -51,10 +59,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>2.7.1</version>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -100,6 +105,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>${findbugs_maven_plugin_version}</version>
 			</plugin>
 		</plugins>
 	</reporting>
