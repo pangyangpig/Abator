@@ -16,7 +16,7 @@ import org.apache.ibatis.session.Configuration;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SqlMapBuilderTest {
+public class SqlMapperBuilderTest {
 	private org.hsqldb.Server db;
 	private String PATH = "/tmp/hsqldb";
 	private String DATABASE_NAME = "generator";
