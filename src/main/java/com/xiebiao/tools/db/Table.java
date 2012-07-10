@@ -1,5 +1,6 @@
 package com.xiebiao.tools.db;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import com.xiebiao.tools.util.Util;
@@ -13,12 +14,17 @@ public class Table {
 
 	public Table() {
 		comment = "";
+		columns = new HashSet<Column>();
 	}
 
 	public Table(String tableName) {
+		this();
 		this.name = tableName;
 		this.alias = Util.getModelClassName(tableName);
-		comment = "";
+	}
+
+	public void addColumn(Column column) {
+		columns.add(column);
 	}
 
 	public String getName() {

@@ -6,7 +6,7 @@ import com.xiebiao.tools.db.Config;
 import com.xiebiao.tools.db.DaoClassBuilder;
 import com.xiebiao.tools.db.DaoImplClassBuilder;
 import com.xiebiao.tools.db.DomainClassBuilder;
-import com.xiebiao.tools.db.SqlMapBuilder;
+import com.xiebiao.tools.db.SqlMapperBuilder;
 import com.xiebiao.tools.db.Table;
 
 public class Main {
@@ -25,7 +25,7 @@ public class Main {
 			Properties pro = daoImplClassBuilder.getConfig().getProperties();
 			pro.put("dao.impl.implements", dao);
 			String daoImpl = daoImplClassBuilder.from(table).build();
-			SqlMapBuilder.from(table, daoImpl).build();
+			SqlMapperBuilder.from(table, daoImpl).build();
 		}
 	}
 }

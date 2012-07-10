@@ -7,17 +7,19 @@ import java.io.IOException;
 
 import com.xiebiao.tools.util.Util;
 
-public class SqlMapBuilder {
+public class SqlMapperBuilder {
+	private final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(this
+			.getClass());
 	protected StringBuffer sb;
 	protected Table table;
 	protected String tab = "    ";
 	protected String namespace;
 
-	private SqlMapBuilder() {
+	private SqlMapperBuilder() {
 	}
 
-	public static SqlMapBuilder from(Table table, String namespace) {
-		SqlMapBuilder sqlMap = new SqlMapBuilder();
+	public static SqlMapperBuilder from(Table table, String namespace) {
+		SqlMapperBuilder sqlMap = new SqlMapperBuilder();
 		sqlMap.sb = new StringBuffer();
 		sqlMap.namespace = namespace;
 		if (table == null || table.getName().equals("")) {
@@ -191,6 +193,10 @@ public class SqlMapBuilder {
 		buildEnd();
 	}
 
+	/**
+	 * 
+	 * @return 生成文件的绝对路径
+	 */
 	public String build() {
 		doBuild();
 		String dirPath = ClassBuilder.OUTPUT + File.separator + "mybatis";
@@ -215,7 +221,7 @@ public class SqlMapBuilder {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println(table.getName() + "SQL.xml" + " ... build success!");
+		LOG.debug(table.getName() + "SQL.xml" + " ... build success!");
 		return fileName;
 	}
 }
