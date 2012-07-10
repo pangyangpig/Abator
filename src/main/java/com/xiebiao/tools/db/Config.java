@@ -23,6 +23,14 @@ public class Config {
 	private static final String CONFIG_FILE = "config.properties";
 	private static final String COLUMNS_SQL = "select * from COLUMNS where TABLE_SCHEMA=? and TABLE_NAME=?";
 
+	public enum DB_TYPE {
+		MYSQL
+	}
+
+	public Config(Properties properties) {
+		this.properties = properties;
+	}
+
 	public Config() {
 		properties = new Properties();
 		if (System.getProperty("db.host") == null
