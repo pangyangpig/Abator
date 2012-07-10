@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-import com.xiebiao.tools.util.Util;
-
 public class Config {
+	private final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(this
+			.getClass());
 	public static final String INFORMATION_SCHEMA = "information_schema";
 	private Properties properties;
 	private static final String CONFIG_FILE = "config.properties";
@@ -82,12 +82,12 @@ public class Config {
 					+ properties.getProperty("db.password");
 			Connection connection = DriverManager.getConnection(jdbcUrl);
 			if (connection == null) {
-				System.out.println("Can't get connection");
+				LOG.error("Can't get connection");
 			}
 			return connection;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println(e);
+			LOG.error("", e);
 		}
 		return null;
 	}
@@ -172,7 +172,7 @@ public class Config {
 				columns.add(column);
 			}
 			if (!hasPriKey) {
-				System.out.println("WARN: table(" + table.getName()
+				LOG.warn("table(" + table.getName()
 						+ ") must have PRIMARY KEY. ");
 			}
 			close(connection);

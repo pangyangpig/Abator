@@ -8,6 +8,8 @@ import java.io.IOException;
 import com.xiebiao.tools.util.Util;
 
 public class DaoImplClassBuilder extends DaoClassBuilder {
+	private final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(this
+			.getClass());
 	public final static String PACKAGE = "dao.impl.package";
 	public final static String EXTENDS = "dao.impl.extends";
 	public final static String IMPLEMENTS = "dao.impl.implements";
@@ -21,7 +23,8 @@ public class DaoImplClassBuilder extends DaoClassBuilder {
 
 	protected void buildField() {
 		sb.append("\n");
-		sb.append(tab + tab + "public final String NAME_SPACE = this.getClass().getName();");
+		sb.append(tab + tab
+				+ "public final String NAME_SPACE = this.getClass().getName();");
 	}
 
 	protected void buildImport() {
@@ -64,7 +67,7 @@ public class DaoImplClassBuilder extends DaoClassBuilder {
 					+ " {\n");
 		}
 	}
-
+  
 	public String build() {
 		if (sb == null) {
 			throw new java.lang.InstantiationError();
@@ -98,7 +101,7 @@ public class DaoImplClassBuilder extends DaoClassBuilder {
 			e.printStackTrace();
 		}
 		String full_name = _package + "." + modelClassName;
-		System.out.println(full_name + " ... build success!");
+		LOG.debug(full_name + " ... build success!");
 		return full_name;
 	}
 

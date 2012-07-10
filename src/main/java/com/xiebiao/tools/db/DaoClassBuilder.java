@@ -14,6 +14,8 @@ import com.xiebiao.tools.util.Util;
  * 
  */
 public class DaoClassBuilder extends ClassBuilder {
+	private final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(this
+			.getClass());
 	public final static String PACKAGE = "dao.package";
 	public final static String EXTENDS = "dao.extends";
 	public final static String SUFFIX = "dao.suffix";
@@ -36,6 +38,10 @@ public class DaoClassBuilder extends ClassBuilder {
 		}
 	}
 
+	/**
+	 * 
+	 * @return 返回生成文件的绝对地址
+	 */
 	public String build() {
 		if (sb == null) {
 			throw new java.lang.InstantiationError();
@@ -69,7 +75,7 @@ public class DaoClassBuilder extends ClassBuilder {
 			e.printStackTrace();
 		}
 		String full_name = _package + "." + modelClassName;
-		System.out.println(full_name + " ... build success!");
+		LOG.debug(full_name + " ... build success!");
 		return full_name;
 	}
 

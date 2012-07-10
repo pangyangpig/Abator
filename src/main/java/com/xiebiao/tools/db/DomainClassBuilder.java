@@ -17,7 +17,8 @@ import com.xiebiao.tools.util.Util;
  * 
  */
 public class DomainClassBuilder extends ClassBuilder {
-
+	private final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(this
+			.getClass());
 	public final static String PACKAGE = "domain.package";
 	public final static String EXTENDS = "domain.extends";
 	public final static String SUFFIX = "domain.suffix";
@@ -26,7 +27,7 @@ public class DomainClassBuilder extends ClassBuilder {
 	public DomainClassBuilder(String _package) {
 		tab = "    ";
 		if (_package == null || _package.equals("")) {
-			System.out.println("WARN: package must be setting. ");
+			LOG.warn(" package must be setting. ");
 		}
 		File outputDir = new File(OUTPUT);
 		if (!outputDir.exists()) {
@@ -74,7 +75,7 @@ public class DomainClassBuilder extends ClassBuilder {
 			e.printStackTrace();
 		}
 		String full_name = _package + "." + modelClassName + ".java";
-		System.out.println(full_name + " ... build success!");
+		LOG.debug(full_name + " ... build success!");
 		return full_name;
 	}
 
@@ -153,8 +154,7 @@ public class DomainClassBuilder extends ClassBuilder {
 		sb.append(tab + "private static final long serialVersionUID = 1L;\n");
 		Set<Column> columns = table.getColumns();
 		if (columns == null) {
-			System.err.println("WARN: Table=" + table.getName()
-					+ " has no column.");
+			LOG.error("WARN: Table=" + table.getName() + " has no column.");
 			return;
 		} else {
 			for (Column c : columns) {

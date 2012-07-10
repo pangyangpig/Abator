@@ -3,6 +3,8 @@ package com.xiebiao.tools.db;
 import java.io.File;
 
 public abstract class ClassBuilder {
+	private final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(this
+			.getClass());
 	protected String tab;
 	protected Table table;
 	protected Config config;
@@ -19,7 +21,7 @@ public abstract class ClassBuilder {
 		}
 		tab = "    ";
 		if (_package == null || _package.equals("")) {
-			System.out.println("WARN: package must be setting. ");
+			LOG.warn(" package must be setting. ");
 		}
 		File outputDir = new File(OUTPUT);
 		if (!outputDir.exists()) {
@@ -59,9 +61,6 @@ public abstract class ClassBuilder {
 	protected void buildClassEnd() {
 		sb.append("\n}");
 	}
-
-	
-
 
 	protected abstract void buildToString();
 
