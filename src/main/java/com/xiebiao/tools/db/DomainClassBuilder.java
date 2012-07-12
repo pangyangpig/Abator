@@ -11,7 +11,7 @@ import java.util.Set;
 import com.xiebiao.tools.util.Util;
 
 /**
- * 生成表对应的Model
+ * 生成表对应的domain
  * 
  * @author xiaog
  * 
@@ -115,8 +115,9 @@ public class DomainClassBuilder extends ClassBuilder {
 			return;
 		} else {
 			for (Column c : table.getColumns()) {
-				if (DataType2Java.dataTypeMap.get(c.getDataType()).equals(
-						"Date")) {
+				String dataType = DataType2Java.dataTypeMap
+						.get(c.getDataType());
+				if (dataType != null && dataType.equals("Date")) {
 					sb.append("import java.util.Date;\n");
 					break;
 				}
@@ -154,20 +155,29 @@ public class DomainClassBuilder extends ClassBuilder {
 		sb.append(tab + "private static final long serialVersionUID = 1L;\n");
 		Set<Column> columns = table.getColumns();
 		if (columns == null) {
-			LOG.error("WARN: Table=" + table.getName() + " has no column.");
+			LOG.error(" Table=" + table.getName() + " has no column.");
 			return;
 		} else {
 			for (Column c : columns) {
 				String name = Util.getCamelName(Util.getCamelName(c.getName()));
+				String dataType = DataType2Java.dataTypeMap
+						.get(c.getDataType());
+				if (dataType == null) {
+					LOG.error("Column=" + c.getName() + " has null datatype.");
+					continue;
+				}
 				if (JavaKeyWord.isJavaKeyWord(name)) {
 					name = "_" + name;
 				}
 				if (c.isPrimaryKey()) {
 					sb.append(tab + "//primary key \n");
 				}
-				sb.append(tab + "protected "
-						+ DataType2Java.dataTypeMap.get(c.getDataType()) + " "
-						+ name + ";\n");
+				if (c.getDataType().equals("bit") && c.getPrecision() == 1) {
+					sb.append(tab + "protected  boolean " + name + ";\n");
+				} else {
+					sb.append(tab + "protected " + dataType + " " + name
+							+ ";\n");
+				}
 				names.add(name);
 			}
 		}

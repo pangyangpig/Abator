@@ -40,7 +40,7 @@ public class Column {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("[").append("name=" + name)
-				.append(",dataType=" + dataType + "]");
+				.append(",dataType=" + dataType + ",precision="+precision+"]");
 		return sb.toString();
 	}
 
@@ -54,6 +54,22 @@ public class Column {
 
 	public boolean isPrimaryKey() {
 		return primaryKey;
+	}
+
+	public int getMaxLength() {
+		return maxLength;
+	}
+
+	public void setMaxLength(int maxLength) {
+		this.maxLength = maxLength;
+	}
+
+	public int getPrecision() {
+		return precision;
+	}
+
+	public void setPrecision(int precision) {
+		this.precision = precision;
 	}
 
 	public void setPrimaryKey(boolean primaryKey) {
@@ -74,5 +90,6 @@ public class Column {
 	private String dataType;
 	private boolean primaryKey;
 	private String comment;
-
+	private int maxLength = 0;
+	private int precision;
 }

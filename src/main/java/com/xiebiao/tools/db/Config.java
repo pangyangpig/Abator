@@ -172,6 +172,8 @@ public class Config {
 				Column column = new Column();
 				column.setName(rs.getString("COLUMN_NAME").trim());
 				column.setDataType(rs.getString("DATA_TYPE"));
+				column.setPrecision(rs.getInt("NUMERIC_PRECISION"));
+				column.setMaxLength(rs.getInt("CHARACTER_MAXIMUM_LENGTH"));
 				if (rs.getString("COLUMN_KEY").equalsIgnoreCase("PRI")) {
 					column.setPrimaryKey(true);
 					hasPriKey = true;
