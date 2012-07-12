@@ -172,16 +172,21 @@ public class DomainClassBuilder extends ClassBuilder {
 				if (c.isPrimaryKey()) {
 					sb.append(tab + "//primary key \n");
 				}
-				if (c.getDataType().equals("bit") && c.getPrecision() == 1) {
-					sb.append(tab + "protected  boolean " + name + ";\n");
-				} else {
-					sb.append(tab + "protected " + dataType + " " + name
-							+ ";\n");
-				}
+				sb.append(tab + "protected " + getJavaDataType(c) + " " + name
+						+ ";\n");
+
 				names.add(name);
 			}
 		}
 
+	}
+
+	private String getJavaDataType(Column column) {
+		if (column.getDataType().equals("bit") && column.getPrecision() == 1) {
+			return "boolean";
+		} else {
+			return DataType2Java.dataTypeMap.get(column.getDataType());
+		}
 	}
 
 	protected void buildSetterGetter() {
@@ -198,8 +203,7 @@ public class DomainClassBuilder extends ClassBuilder {
 					tab + "public void set"
 							+ field.substring(0, 1).toUpperCase()
 							+ field.substring(1, field.length()) + "("
-							+ DataType2Java.dataTypeMap.get(c.getDataType())
-							+ " " + _field + ")")
+							+ getJavaDataType(c) + " " + _field + ")")
 					.append(" {\n")
 					.append(tab + tab + "this." + _field + " = " + _field
 							+ ";\n").append(tab + "}\n");
@@ -208,9 +212,8 @@ public class DomainClassBuilder extends ClassBuilder {
 			sb.append(tab + " * " + c.getComment() + "\n");
 			sb.append(tab + " */\n");
 			sb.append(
-					tab + "public "
-							+ DataType2Java.dataTypeMap.get(c.getDataType())
-							+ " get" + field.substring(0, 1).toUpperCase()
+					tab + "public " + getJavaDataType(c) + " get"
+							+ field.substring(0, 1).toUpperCase()
 							+ field.substring(1, field.length()) + "()")
 					.append(" {\n").append(tab)
 					.append(tab + "return this." + _field + ";\n")
