@@ -18,23 +18,12 @@ import org.junit.Test;
 
 public class SqlMapperBuilderTest {
 	private org.hsqldb.Server db;
-	private String PATH = "/tmp/hsqldb";
 	private String DATABASE_NAME = "generator";
-	private final static int PORT = 9001;
 
 	@Before
 	public void setUp() {
-		File file = new File(PATH);
-		if (file.exists()) {
-			file.delete();
-			System.out.println("delete database ......");
-		} else {
-			System.out.println("database isn't exists......");
-		}
 		db = new org.hsqldb.Server();
 		db.setDatabaseName(0, DATABASE_NAME);
-		db.setDatabasePath(0, PATH);
-		db.setPort(PORT);
 		db.start();
 	}
 
@@ -43,7 +32,7 @@ public class SqlMapperBuilderTest {
 		try {
 			Class.forName("org.hsqldb.jdbcDriver");
 			Connection connection = DriverManager.getConnection(
-					"jdbc:hsqldb:hsql://localhost/" + DATABASE_NAME, "sa", "");
+					"jdbc:hsqldb:mem: " + DATABASE_NAME, "sa", "");
 			return connection;
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
