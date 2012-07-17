@@ -48,6 +48,27 @@ public class SqlMapperBuilder {
 		return sb.toString();
 	}
 
+	private void buildDefaultResultMap() {
+		sb.append(tab);
+		sb.append("<resultMap  id=\"" + table.getAlias()
+				+ "ResultMap\"  type=\"" + table.getAlias() + "\">\n");
+		for (Column column : table.getColumns()) {
+			if (DataType2Java.dataTypeMap.get(column.getDataType()).equals(
+					"Date")) {
+				sb.append(tab + tab + tab + "<result property=\""
+						+ Util.getCamelName(column.getName())
+						+ "\"  column= \"" + column.getName()
+						+ "\" javaType=\"Date\"  jdbcType=\""
+						+ org.apache.ibatis.type.JdbcType.DATE+ "\"/>\n");
+			} else {
+				sb.append(tab + tab + tab + "<result property=\""
+						+ Util.getCamelName(column.getName())
+						+ "\"  column= \"" + column.getName() + "\"/>\n");
+			}
+		}
+		sb.append(tab + "</resultMap>\n");
+	}
+
 	private void buildCondition() {
 		sb.append(tab);
 		sb.append("<sql id=\"condition\">\n");
@@ -105,8 +126,8 @@ public class SqlMapperBuilder {
 	private void buildFind() {
 
 		sb.append(tab
-				+ "<select id=\"find\" parameterType=\"string\" resultType=\""
-				+ table.getAlias() + "\">\n");
+				+ "<select id=\"find\" parameterType=\"string\" resultMap=\""
+				+ table.getAlias() + "ResultMap\">\n");
 		sb.append(tab + tab + "SELECT * FROM \n");
 		sb.append(tab + tab + "<include refid=\"table_name\" /> \n");
 		sb.append(tab + tab + "WHERE " + table.getPriKey() + " = #{"
@@ -135,8 +156,8 @@ public class SqlMapperBuilder {
 
 	private void buildList() {
 		sb.append(tab + "<select id=\"list\" parameterType=\""
-				+ table.getAlias() + "\" resultType=\"" + table.getAlias()
-				+ "\"> \n");
+				+ table.getAlias() + "\" resultMap=\"" + table.getAlias()
+				+ "ResultMap\"> \n");
 		sb.append(tab + "SELECT * FROM \n");
 		sb.append(tab + "<include refid=\"table_name\" /> \n");
 		sb.append(tab + "<include refid=\"condition\" /> \n");
@@ -155,6 +176,7 @@ public class SqlMapperBuilder {
 	}
 
 	public String buildDefault() {
+		buildDefaultResultMap();
 		sb.append(tab);
 		String tmp = "<sql id=\"field_list\">\n";
 		for (Column column : table.getColumns()) {
