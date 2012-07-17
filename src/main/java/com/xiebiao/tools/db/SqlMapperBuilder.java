@@ -59,7 +59,7 @@ public class SqlMapperBuilder {
 						+ Util.getCamelName(column.getName())
 						+ "\"  column= \"" + column.getName()
 						+ "\" javaType=\"Date\"  jdbcType=\""
-						+ org.apache.ibatis.type.JdbcType.DATE+ "\"/>\n");
+						+ org.apache.ibatis.type.JdbcType.DATE + "\"/>\n");
 			} else {
 				sb.append(tab + tab + tab + "<result property=\""
 						+ Util.getCamelName(column.getName())
@@ -74,10 +74,17 @@ public class SqlMapperBuilder {
 		sb.append("<sql id=\"condition\">\n");
 		sb.append(tab + tab + "<where>\n");
 		for (Column column : table.getColumns()) {
-			sb.append(tab + tab + tab + "<if test=\"" + column.getName()
-					+ " != null\">\n");
-			sb.append(tab + tab + tab + tab + column.getName() + "=#{"
-					+ Util.getCamelName(column.getName()) + "}\n");
+			if (DataType2Java.dataTypeMap.get(column.getDataType()).equals(
+					"int")) {
+				sb.append(tab + tab + tab + "<if test=\""
+						+ Util.getCamelName(column.getName()) + "  != null  and  "
+						+ Util.getCamelName(column.getName()) + " != 0 \">\n");
+			} else {
+				sb.append(tab + tab + tab + "<if test=\""
+						+ Util.getCamelName(column.getName()) + " != null\">\n");
+			}
+			sb.append(tab + tab + tab + tab + " and " + column.getName()
+					+ "=#{" + Util.getCamelName(column.getName()) + "}\n");
 			sb.append(tab + tab + tab + "</if>\n");
 		}
 		sb.append(tab + tab + "</where>\n");
