@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.xiebiao.tools.util.Constants;
 import com.xiebiao.tools.util.Util;
 
 /**
@@ -129,7 +130,8 @@ public class DomainClassBuilder extends ClassBuilder {
 	protected void buildAnnotate() {
 		sb.append("\n");
 		sb.append("/**\n");
-		sb.append(" * " + table.getComment() + "\n");
+		sb.append(" *  " + table.getComment() + "\n");
+		sb.append("* " + Constants.SIGNATURE + " \n");
 		sb.append(" */");
 		sb.append("\n");
 	}

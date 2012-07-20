@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import com.xiebiao.tools.util.Constants;
 import com.xiebiao.tools.util.Util;
 
 public class SqlMapperBuilder {
@@ -77,7 +78,8 @@ public class SqlMapperBuilder {
 			if (DataType2Java.dataTypeMap.get(column.getDataType()).equals(
 					"int")) {
 				sb.append(tab + tab + tab + "<if test=\""
-						+ Util.getCamelName(column.getName()) + "  != null  and  "
+						+ Util.getCamelName(column.getName())
+						+ "  != null  and  "
 						+ Util.getCamelName(column.getName()) + " != 0 \">\n");
 			} else {
 				sb.append(tab + tab + tab + "<if test=\""
@@ -209,6 +211,7 @@ public class SqlMapperBuilder {
 	}
 
 	public String buildEnd() {
+		sb.append("<!-- " + Constants.SIGNATURE + " -->\n");
 		sb.append("</mapper>");
 		return sb.toString();
 	}
