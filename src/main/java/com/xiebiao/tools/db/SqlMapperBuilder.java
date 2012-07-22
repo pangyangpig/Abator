@@ -61,6 +61,13 @@ public class SqlMapperBuilder {
 						+ "\"  column= \"" + column.getName()
 						+ "\" javaType=\"Date\"  jdbcType=\""
 						+ org.apache.ibatis.type.JdbcType.DATE + "\"/>\n");
+			} else if (DataType2Java.dataTypeMap.get(column.getDataType())
+					.equals("byte[]")) {
+				sb.append(tab + tab + tab + "<result property=\""
+						+ Util.getCamelName(column.getName())
+						+ "\"  column= \"" + column.getName()
+						+ "\" javaType=\"byte[]\"  jdbcType=\""
+						+ org.apache.ibatis.type.JdbcType.VARBINARY + "\"/>\n");
 			} else {
 				sb.append(tab + tab + tab + "<result property=\""
 						+ Util.getCamelName(column.getName())
@@ -97,7 +104,7 @@ public class SqlMapperBuilder {
 		sb.append(tab
 				+ "<select id=\"count\" resultType=\"int\" parameterType=\""
 				+ table.getAlias() + "\">\n");
-		sb.append(tab + tab + "select count(*) as value from \n");
+		sb.append(tab + tab + "SELECT count(*) as value FROM \n");
 		sb.append(tab + tab + "<include refid=\"table_name\" />\n");
 		sb.append(tab + tab + "<include refid=\"condition\" />\n");
 		sb.append(tab + "</select>\n");
