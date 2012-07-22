@@ -163,6 +163,16 @@ public class SqlMapperBuilder {
 		sb.append(tab + "</update> \n");
 	}
 
+	private void buildDelete(String tmp) {
+		sb.append(tab + "<delete id=\"delete\"> \n");
+		sb.append(tab + tab + "DELETE FROM \n");
+		sb.append(tab + tab + "<include refid=\"table_name\" />\n");
+		sb.append(tab + tab + " WHERE " + table.getPriKey() + "=#{"
+				+ table.getPriKey() + "} \n");
+
+		sb.append(tab + "</delete> \n");
+	}
+
 	private void buildList() {
 		sb.append(tab + "<select id=\"list\" parameterType=\""
 				+ table.getAlias() + "\" resultMap=\"" + table.getAlias()
@@ -199,6 +209,7 @@ public class SqlMapperBuilder {
 		buildCount();
 		buildFind();
 		buildUpdate(tmp);
+		buildDelete(tmp);
 		buildInsert(tmp);
 		buildList();
 		return sb.toString();
