@@ -59,15 +59,18 @@ public class SqlMapperBuilder {
 				sb.append(tab + tab + tab + "<result property=\""
 						+ Util.getCamelName(column.getName())
 						+ "\"  column= \"" + column.getName()
-						+ "\" javaType=\"Date\"  jdbcType=\""
+						+ "\" javaType=\"java.util.Date\"  jdbcType=\""
 						+ org.apache.ibatis.type.JdbcType.DATE + "\"/>\n");
 			} else if (DataType2Java.dataTypeMap.get(column.getDataType())
 					.equals("byte[]")) {
-				sb.append(tab + tab + tab + "<result property=\""
+				sb.append(tab
+						+ tab
+						+ tab
+						+ "<result property=\""
 						+ Util.getCamelName(column.getName())
-						+ "\"  column= \"" + column.getName()
-						+ "\" javaType=\"byte[]\"  jdbcType=\""
-						+ org.apache.ibatis.type.JdbcType.VARBINARY + "\"/>\n");
+						+ "\"  column= \""
+						+ column.getName()
+						+ "\" typeHandler=\"org.apache.ibatis.type.ByteArrayTypeHandler\"/>\n");
 			} else {
 				sb.append(tab + tab + tab + "<result property=\""
 						+ Util.getCamelName(column.getName())
