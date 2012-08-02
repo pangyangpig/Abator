@@ -15,11 +15,15 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-public class Config {
+public final class Config extends Properties{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6815576977124926101L;
 	private final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(this
 			.getClass());
 	public static final String INFORMATION_SCHEMA = "information_schema";
-	private Properties properties;
+
 	private static final String CONFIG_FILE = "config.properties";
 	private static final String COLUMNS_SQL = "select * from COLUMNS where TABLE_SCHEMA=? and TABLE_NAME=?";
 
@@ -27,12 +31,8 @@ public class Config {
 		MYSQL
 	}
 
-	public Config(Properties properties) {
-		this.properties = properties;
-	}
 
 	public Config() {
-		properties = new Properties();
 		if (System.getProperty("db.host") == null
 				|| System.getProperty("db.port") == null
 				|| System.getProperty("db.name") == null
@@ -40,7 +40,7 @@ public class Config {
 				|| System.getProperty("db.password") == null) {
 
 			try {
-				properties.load(new FileInputStream(
+				this.load(new FileInputStream(
 						new File(System.getProperty("user.dir")
 								+ File.separator + CONFIG_FILE)));
 			} catch (FileNotFoundException e) {
@@ -54,13 +54,12 @@ public class Config {
 			String name = System.getProperty("db.name");
 			String user = System.getProperty("db.user");
 			String password = System.getProperty("db.password");
-			properties = new Properties();
-			properties.put("db.host", host);
-			properties.put("db.port", port);
-			properties.put("db.name", name);
-			properties.put("db.user", user);
-			properties.put("db.password", password);
-			properties.put("package", "");
+			this.put("db.host", host);
+			this.put("db.port", port);
+			this.put("db.name", name);
+			this.put("db.user", user);
+			this.put("db.password", password);
+			this.put("package", "");
 		}
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -70,9 +69,8 @@ public class Config {
 	}
 
 	public Config(String configFile) {
-		properties = new Properties();
 		try {
-			properties.load(new FileInputStream(new File(configFile)));
+			this.load(new FileInputStream(new File(configFile)));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -83,11 +81,11 @@ public class Config {
 	private Connection getConnection() {
 		try {
 			String jdbcUrl = "jdbc:mysql://"
-					+ properties.getProperty("db.host") + ":"
-					+ properties.getProperty("db.port") + "/"
+					+ this.getProperty("db.host") + ":"
+					+ this.getProperty("db.port") + "/"
 					+ INFORMATION_SCHEMA + "?user="
-					+ properties.getProperty("db.user") + "&password="
-					+ properties.getProperty("db.password");
+					+ this.getProperty("db.user") + "&password="
+					+ this.getProperty("db.password");
 			Connection connection = DriverManager.getConnection(jdbcUrl);
 			if (connection == null) {
 				LOG.error("Can't get connection");
@@ -116,7 +114,7 @@ public class Config {
 			PreparedStatement preparedStatement = connection
 					.prepareStatement(sql);
 			preparedStatement.setString(1,
-					this.properties.getProperty("db.name"));
+					this.getProperty("db.name"));
 			ResultSet rs = preparedStatement.executeQuery();
 			tables = new ArrayList<Table>();
 			while (rs.next()) {
@@ -141,7 +139,7 @@ public class Config {
 			PreparedStatement preparedStatement = connection
 					.prepareStatement(COLUMNS_SQL);
 			preparedStatement.setString(1,
-					this.properties.getProperty("db.name"));
+					this.getProperty("db.name"));
 			preparedStatement.setString(2, table.getName());
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()) {
@@ -163,7 +161,7 @@ public class Config {
 			PreparedStatement preparedStatement = connection
 					.prepareStatement(COLUMNS_SQL);
 			preparedStatement.setString(1,
-					this.properties.getProperty("db.name"));
+					this.getProperty("db.name"));
 			preparedStatement.setString(2, table.getName());
 			ResultSet rs = preparedStatement.executeQuery();
 			columns = new HashSet<Column>();
@@ -193,7 +191,7 @@ public class Config {
 	}
 
 	public Properties getProperties() {
-		return properties;
+		return this;
 	}
 
 }

@@ -1,7 +1,5 @@
 package com.xiebiao.tools;
 
-import java.util.Properties;
-
 import com.xiebiao.tools.db.Config;
 import com.xiebiao.tools.db.DaoClassBuilder;
 import com.xiebiao.tools.db.DaoImplClassBuilder;
@@ -22,7 +20,7 @@ public class Main {
 		for (Table table : c.getTables()) {
 			modelClassBuilder.from(table).build();
 			String dao = daoClassBuilder.from(table).build();
-			Properties pro = daoImplClassBuilder.getConfig().getProperties();
+			Config pro = daoImplClassBuilder.getConfig();
 			pro.put("dao.impl.implements", dao);
 			String daoImpl = daoImplClassBuilder.from(table).build();
 			SqlMapperBuilder.from(table, daoImpl).build();

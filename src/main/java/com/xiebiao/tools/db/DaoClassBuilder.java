@@ -40,7 +40,7 @@ public class DaoClassBuilder extends ClassBuilder {
 
 	/**
 	 * 
-	 * @return 返回生成文件的绝对地址
+	 * @return 返回类的全名
 	 */
 	public String build() {
 		if (sb == null) {
