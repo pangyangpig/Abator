@@ -80,10 +80,7 @@ public class SqlMapperBuilder {
 		sb.append(tab + "</resultMap>\n");
 	}
 
-	private void buildCondition() {
-		sb.append(tab);
-		sb.append("<sql id=\"condition\">\n");
-		sb.append(tab + tab + "<where>\n");
+	private void buildIfCondition() {
 		for (Column column : table.getColumns()) {
 			if (DataType2Java.dataTypeMap.get(column.getDataType()).equals(
 					"int")) {
@@ -99,6 +96,13 @@ public class SqlMapperBuilder {
 					+ "=#{" + Util.getCamelName(column.getName()) + "}\n");
 			sb.append(tab + tab + tab + "</if>\n");
 		}
+	}
+
+	private void buildCondition() {
+		sb.append(tab);
+		sb.append("<sql id=\"condition\">\n");
+		sb.append(tab + tab + "<where>\n");
+		buildIfCondition();
 		sb.append(tab + tab + "</where>\n");
 		sb.append(tab + "</sql>\n");
 	}
@@ -159,14 +163,7 @@ public class SqlMapperBuilder {
 		sb.append(tab + "UPDATE \n");
 		sb.append(tab + "<include refid=\"table_name\" />\n");
 		sb.append(tab + "SET \n");
-		tmp = "";
-		for (Column column : table.getColumns()) {
-			tmp = tmp + tab + tab;
-			tmp = tmp + column.getName() + "= #{"
-					+ Util.getCamelName(column.getName()) + "},\n";
-		}
-		tmp = tmp.substring(0, tmp.length() - 2);
-		sb.append(tmp + "\n");
+		buildIfCondition();
 		sb.append(tab + tab + "WHERE " + table.getPriKey() + "=#{"
 				+ table.getPriKey() + "} \n");
 
