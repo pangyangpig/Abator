@@ -80,7 +80,7 @@ public class SqlMapperBuilder {
 		sb.append(tab + "</resultMap>\n");
 	}
 
-	private void buildIfCondition() {
+	private void buildWhereCondition() {
 		for (Column column : table.getColumns()) {
 			if (DataType2Java.dataTypeMap.get(column.getDataType()).equals(
 					"int")) {
@@ -92,17 +92,37 @@ public class SqlMapperBuilder {
 				sb.append(tab + tab + tab + "<if test=\""
 						+ Util.getCamelName(column.getName()) + " != null\">\n");
 			}
-			sb.append(tab + tab + tab + tab + " and " + column.getName()
+			sb.append(tab + tab + tab + tab + "  and " + column.getName()
 					+ "=#{" + Util.getCamelName(column.getName()) + "}\n");
 			sb.append(tab + tab + tab + "</if>\n");
 		}
+	}
+
+	private void buildSetCondition() {
+		sb.append(tab + tab + tab + "<set>\n");
+		for (Column column : table.getColumns()) {
+			if (DataType2Java.dataTypeMap.get(column.getDataType()).equals(
+					"int")) {
+				sb.append(tab + tab + tab + "<if test=\""
+						+ Util.getCamelName(column.getName())
+						+ "  != null  and  "
+						+ Util.getCamelName(column.getName()) + " != 0 \">\n");
+			} else {
+				sb.append(tab + tab + tab + "<if test=\""
+						+ Util.getCamelName(column.getName()) + " != null\">\n");
+			}
+			sb.append(tab + tab + tab + tab + "  " + column.getName() + "=#{"
+					+ Util.getCamelName(column.getName()) + "},\n");
+			sb.append(tab + tab + tab + "</if>\n");
+		}
+		sb.append(tab + tab + tab + "</set>\n");
 	}
 
 	private void buildCondition() {
 		sb.append(tab);
 		sb.append("<sql id=\"condition\">\n");
 		sb.append(tab + tab + "<where>\n");
-		buildIfCondition();
+		buildWhereCondition();
 		sb.append(tab + tab + "</where>\n");
 		sb.append(tab + "</sql>\n");
 	}
@@ -162,8 +182,7 @@ public class SqlMapperBuilder {
 		sb.append(tab + "<update id=\"update\"> \n");
 		sb.append(tab + "UPDATE \n");
 		sb.append(tab + "<include refid=\"table_name\" />\n");
-		sb.append(tab + "SET \n");
-		buildIfCondition();
+		buildSetCondition();
 		sb.append(tab + tab + "WHERE " + table.getPriKey() + "=#{"
 				+ table.getPriKey() + "} \n");
 
