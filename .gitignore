@@ -2,8 +2,11 @@
 .settings
 .classpath
 .project
+.idea
 /target/
 /build/
 /output
 /bin/output
 /bin/domain*.jar
+generator.iml
+
