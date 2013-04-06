@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.xiebiao.tools</groupId>
+	<groupId>com.github</groupId>
 	<artifactId>generator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<properties>
@@ -122,6 +122,25 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<finalName>${project.name}-${project.version}</finalName>
+					<descriptors>
+						<descriptor>src/main/assembly/descriptors.xml</descriptor>
+					</descriptors>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

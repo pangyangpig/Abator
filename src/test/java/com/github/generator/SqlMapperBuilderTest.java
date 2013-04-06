@@ -1,4 +1,4 @@
-package com.xiebiao.tools.db;
+package com.github.generator;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,6 +15,10 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.Configuration;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.github.generator.schema.Column;
+import com.github.generator.schema.SqlMapperBuilder;
+import com.github.generator.schema.Table;
 
 public class SqlMapperBuilderTest {
 	private org.hsqldb.Server db;

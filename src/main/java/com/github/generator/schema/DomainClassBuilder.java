@@ -1,4 +1,4 @@
-package com.xiebiao.tools.db;
+package com.github.generator.schema;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,8 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.xiebiao.tools.util.Constants;
-import com.xiebiao.tools.util.Util;
+import com.github.generator.utils.Constants;
+import com.github.generator.utils.FileUtils;
+import com.github.generator.utils.Util;
 
 /**
  * 生成表对应的domain

@@ -1,4 +1,4 @@
-package com.xiebiao.tools.db;
+package com.github.generator.utils;
 
 import java.io.File;
 

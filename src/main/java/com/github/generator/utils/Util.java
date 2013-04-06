@@ -1,4 +1,4 @@
-package com.xiebiao.tools.util;
+package com.github.generator.utils;
 
 public class Util {
 	public static String getModelClassName(String name) {

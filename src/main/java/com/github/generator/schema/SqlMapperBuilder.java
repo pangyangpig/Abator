@@ -1,12 +1,12 @@
-package com.xiebiao.tools.db;
+package com.github.generator.schema;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import com.xiebiao.tools.util.Constants;
-import com.xiebiao.tools.util.Util;
+import com.github.generator.utils.Constants;
+import com.github.generator.utils.Util;
 
 public class SqlMapperBuilder {
 	private final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(this

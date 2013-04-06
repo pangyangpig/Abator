@@ -1,11 +1,11 @@
-package com.xiebiao.tools;
+package com.github.generator;
 
-import com.xiebiao.tools.db.Config;
-import com.xiebiao.tools.db.DaoClassBuilder;
-import com.xiebiao.tools.db.DaoImplClassBuilder;
-import com.xiebiao.tools.db.DomainClassBuilder;
-import com.xiebiao.tools.db.SqlMapperBuilder;
-import com.xiebiao.tools.db.Table;
+import com.github.generator.schema.Config;
+import com.github.generator.schema.DaoClassBuilder;
+import com.github.generator.schema.DaoImplClassBuilder;
+import com.github.generator.schema.DomainClassBuilder;
+import com.github.generator.schema.SqlMapperBuilder;
+import com.github.generator.schema.Table;
 
 public class Main {
 

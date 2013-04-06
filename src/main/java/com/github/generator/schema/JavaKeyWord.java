@@ -1,4 +1,4 @@
-package com.xiebiao.tools.db;
+package com.github.generator.schema;
 
 /**
  * java数据类型关键字.

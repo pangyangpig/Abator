@@ -1,4 +1,4 @@
-package com.xiebiao.tools.db;
+package com.github.generator.schema;
 
 public class Column {
 	public String getName() {

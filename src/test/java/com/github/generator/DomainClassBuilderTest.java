@@ -1,21 +1,24 @@
-package com.xiebiao.tools.db;
+package com.github.generator;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class DaoClassBuilderTest extends BaseTestCase {
-	private DaoClassBuilder daoClassBuilder;
+import com.github.generator.schema.Column;
+import com.github.generator.schema.Config;
+import com.github.generator.schema.DomainClassBuilder;
+import com.github.generator.schema.Table;
+
+public class DomainClassBuilderTest extends BaseTestCase {
+	private DomainClassBuilder modelClassBuilder;
 	private Config config;
 
 	protected void setUp() throws Exception {
 		// super.setUp();
 		config = new Config();
-		config.getProperties().put("domain.package", "com.xiebiao.domain");
-		config.getProperties().put("dao.package", "com.xiebiao.dao");
-		daoClassBuilder = new DaoClassBuilder(config);
+		modelClassBuilder = new DomainClassBuilder(config);
 	}
 
-	public void test_build() {
+	public void testBuild() throws Exception {
 		Column name = new Column();
 		name.setName("name");
 		name.setDataType("varchar");
@@ -42,6 +45,6 @@ public class DaoClassBuilderTest extends BaseTestCase {
 		table.setName("Person");
 		table.setColumns(columns);
 		table.setComment("这是表说明");
-		daoClassBuilder.from(table).build();
+		modelClassBuilder.from(table).build();
 	}
 }

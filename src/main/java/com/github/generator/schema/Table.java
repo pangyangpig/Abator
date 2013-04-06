@@ -1,9 +1,9 @@
-package com.xiebiao.tools.db;
+package com.github.generator.schema;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import com.xiebiao.tools.util.Util;
+import com.github.generator.utils.Util;
 
 public class Table {
 	private String name;

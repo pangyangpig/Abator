@@ -1,4 +1,4 @@
-package com.xiebiao.tools.db;
+package com.github.generator.schema;
 
 import java.io.File;
 import java.io.FileInputStream;

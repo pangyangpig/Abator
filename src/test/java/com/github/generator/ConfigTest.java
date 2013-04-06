@@ -1,4 +1,6 @@
-package com.xiebiao.tools.db;
+package com.github.generator;
+
+import com.github.generator.schema.Config;
 
 import junit.framework.TestCase;
 

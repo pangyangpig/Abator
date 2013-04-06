@@ -1,11 +1,11 @@
-package com.xiebiao.tools.db;
+package com.github.generator.schema;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import com.xiebiao.tools.util.Util;
+import com.github.generator.utils.Util;
 
 /**
  * 生成DAO接口

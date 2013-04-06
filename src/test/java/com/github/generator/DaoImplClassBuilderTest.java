@@ -1,7 +1,12 @@
-package com.xiebiao.tools.db;
+package com.github.generator;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import com.github.generator.schema.Column;
+import com.github.generator.schema.Config;
+import com.github.generator.schema.DaoImplClassBuilder;
+import com.github.generator.schema.Table;
 
 public class DaoImplClassBuilderTest extends BaseTestCase {
 	private DaoImplClassBuilder daoImplClassBuilder;

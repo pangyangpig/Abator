@@ -1,4 +1,4 @@
-package com.xiebiao.tools.db;
+package com.github.generator.schema;
 
 import java.util.HashMap;
 import java.util.Map;

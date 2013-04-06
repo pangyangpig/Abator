@@ -1,4 +1,4 @@
-package com.xiebiao.tools.db;
+package com.github.generator;
 
 import junit.framework.TestCase;
 

@@ -1,6 +1,8 @@
-package com.xiebiao.tools.db;
+package com.github.generator.schema;
 
 import java.io.File;
+
+import com.github.generator.utils.FileUtils;
 
 public abstract class ClassBuilder {
 	private final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(this
