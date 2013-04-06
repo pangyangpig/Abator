@@ -39,8 +39,10 @@ public class Column {
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("[").append("name=" + name)
-				.append(",dataType=" + dataType + ",precision="+precision+"]");
+		sb.append("[")
+				.append("name=" + name)
+				.append(",dataType=" + dataType + ",precision=" + precision
+						+ "]");
 		return sb.toString();
 	}
 
@@ -56,11 +58,11 @@ public class Column {
 		return primaryKey;
 	}
 
-	public int getMaxLength() {
+	public Long getMaxLength() {
 		return maxLength;
 	}
 
-	public void setMaxLength(int maxLength) {
+	public void setMaxLength(Long maxLength) {
 		this.maxLength = maxLength;
 	}
 
@@ -90,6 +92,6 @@ public class Column {
 	private String dataType;
 	private boolean primaryKey;
 	private String comment;
-	private int maxLength = 0;
+	private Long maxLength = 0L;
 	private int precision;
 }

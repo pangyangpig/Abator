@@ -13,7 +13,14 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Config c = new Config();
+		Config c = null;
+		try {
+			c = new Config();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(1);
+		}
 		DomainClassBuilder modelClassBuilder = new DomainClassBuilder(c);
 		DaoClassBuilder daoClassBuilder = new DaoClassBuilder(c);
 		DaoImplClassBuilder daoImplClassBuilder = new DaoImplClassBuilder(c);

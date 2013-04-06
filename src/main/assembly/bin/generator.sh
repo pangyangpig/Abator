@@ -1,5 +1,5 @@
 #!/bin/sh
 
-mvn clean compile jar:jar dependency:copy-dependencies
-java -classpath .:./target/dependency/*:./target/generator-0.0.1-SNAPSHOT.jar \
-com.xiebiao.tools.Main 
+export CLASSPATH=$CLASSPATH:../libs/*:../conf/log4j.properties
+echo $CLASSPATH
+java -classpath $CLASSPATH com.github.generator.Main 

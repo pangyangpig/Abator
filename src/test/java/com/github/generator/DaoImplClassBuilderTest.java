@@ -13,7 +13,11 @@ public class DaoImplClassBuilderTest extends BaseTestCase {
 	private Config config;
 
 	public void test_build() {
-		config = new Config();
+		try {
+			config = new Config();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		config.getProperties().put("dao.impl.package", "com.xiebiao.dao.impl");
 		daoImplClassBuilder = new DaoImplClassBuilder(config);
 		Column name = new Column();

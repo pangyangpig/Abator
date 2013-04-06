@@ -19,8 +19,8 @@ import com.github.generator.utils.Util;
  * 
  */
 public class DomainClassBuilder extends ClassBuilder {
-	private final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(this
-			.getClass());
+	private static final org.slf4j.Logger LOG = org.slf4j.LoggerFactory
+			.getLogger(DomainClassBuilder.class);
 	public final static String PACKAGE = "domain.package";
 	public final static String EXTENDS = "domain.extends";
 	public final static String SUFFIX = "domain.suffix";

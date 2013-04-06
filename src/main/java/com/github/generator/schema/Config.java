@@ -15,10 +15,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-public final class Config extends Properties{
-	/**
-	 * 
-	 */
+public final class Config extends Properties {
 	private static final long serialVersionUID = -6815576977124926101L;
 	private final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(this
 			.getClass());
@@ -27,27 +24,16 @@ public final class Config extends Properties{
 	private static final String CONFIG_FILE = "config.properties";
 	private static final String COLUMNS_SQL = "select * from COLUMNS where TABLE_SCHEMA=? and TABLE_NAME=?";
 
-	public enum DB_TYPE {
-		MYSQL
-	}
-
-
-	public Config() {
+	public Config() throws Exception {
 		if (System.getProperty("db.host") == null
 				|| System.getProperty("db.port") == null
 				|| System.getProperty("db.name") == null
 				|| System.getProperty("db.user") == null
 				|| System.getProperty("db.password") == null) {
-
-			try {
-				this.load(new FileInputStream(
-						new File(System.getProperty("user.dir")
-								+ File.separator + CONFIG_FILE)));
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			File f = new File(".." + File.separator + "conf" + File.separator
+					+ CONFIG_FILE);
+			this.load(new FileInputStream(f));
+			LOG.debug("加载配置文件:" + f.getAbsoluteFile());
 		} else {
 			String host = System.getProperty("db.host");
 			String port = System.getProperty("db.port");
@@ -80,9 +66,8 @@ public final class Config extends Properties{
 
 	private Connection getConnection() {
 		try {
-			String jdbcUrl = "jdbc:mysql://"
-					+ this.getProperty("db.host") + ":"
-					+ this.getProperty("db.port") + "/"
+			String jdbcUrl = "jdbc:mysql://" + this.getProperty("db.host")
+					+ ":" + this.getProperty("db.port") + "/"
 					+ INFORMATION_SCHEMA + "?user="
 					+ this.getProperty("db.user") + "&password="
 					+ this.getProperty("db.password");
@@ -113,8 +98,7 @@ public final class Config extends Properties{
 		try {
 			PreparedStatement preparedStatement = connection
 					.prepareStatement(sql);
-			preparedStatement.setString(1,
-					this.getProperty("db.name"));
+			preparedStatement.setString(1, this.getProperty("db.name"));
 			ResultSet rs = preparedStatement.executeQuery();
 			tables = new ArrayList<Table>();
 			while (rs.next()) {
@@ -138,8 +122,7 @@ public final class Config extends Properties{
 		try {
 			PreparedStatement preparedStatement = connection
 					.prepareStatement(COLUMNS_SQL);
-			preparedStatement.setString(1,
-					this.getProperty("db.name"));
+			preparedStatement.setString(1, this.getProperty("db.name"));
 			preparedStatement.setString(2, table.getName());
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()) {
@@ -160,8 +143,7 @@ public final class Config extends Properties{
 		try {
 			PreparedStatement preparedStatement = connection
 					.prepareStatement(COLUMNS_SQL);
-			preparedStatement.setString(1,
-					this.getProperty("db.name"));
+			preparedStatement.setString(1, this.getProperty("db.name"));
 			preparedStatement.setString(2, table.getName());
 			ResultSet rs = preparedStatement.executeQuery();
 			columns = new HashSet<Column>();
@@ -171,7 +153,7 @@ public final class Config extends Properties{
 				column.setName(rs.getString("COLUMN_NAME").trim());
 				column.setDataType(rs.getString("DATA_TYPE"));
 				column.setPrecision(rs.getInt("NUMERIC_PRECISION"));
-				column.setMaxLength(rs.getInt("CHARACTER_MAXIMUM_LENGTH"));
+				column.setMaxLength(rs.getLong("CHARACTER_MAXIMUM_LENGTH"));
 				if (rs.getString("COLUMN_KEY").equalsIgnoreCase("PRI")) {
 					column.setPrimaryKey(true);
 					hasPriKey = true;
