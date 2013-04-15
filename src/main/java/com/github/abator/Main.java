@@ -7,11 +7,12 @@ import com.github.abator.schema.DomainClassBuilder;
 import com.github.abator.schema.SqlMapperBuilder;
 import com.github.abator.schema.Table;
 
+/**
+ * 工具入口
+ * 
+ * @author xiebiao[谢彪]
+ */
 public class Main {
-
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		Config c = null;
 		try {
