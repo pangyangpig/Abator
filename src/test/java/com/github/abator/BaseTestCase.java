@@ -1,4 +1,4 @@
-package com.github.generator;
+package com.github.abator;
 
 import junit.framework.TestCase;
 

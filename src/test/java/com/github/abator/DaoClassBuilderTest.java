@@ -1,4 +1,4 @@
-package com.github.generator;
+package com.github.abator;
 
 import java.util.HashSet;
 import java.util.Set;

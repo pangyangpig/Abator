@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,6 +16,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
+import com.github.abator.DatabaseType;
+
 public final class Config extends Properties {
 	private static final long serialVersionUID = -6815576977124926101L;
 	private final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(this
@@ -25,30 +28,11 @@ public final class Config extends Properties {
 	private static final String COLUMNS_SQL = "select * from COLUMNS where TABLE_SCHEMA=? and TABLE_NAME=?";
 
 	public Config() throws Exception {
-		if (System.getProperty("db.host") == null
-				|| System.getProperty("db.port") == null
-				|| System.getProperty("db.name") == null
-				|| System.getProperty("db.user") == null
-				|| System.getProperty("db.password") == null) {
-			File f = new File(".." + File.separator + "conf" + File.separator
-					+ CONFIG_FILE);
-			this.load(new FileInputStream(f));
-			LOG.debug("加载配置文件:" + f.getAbsoluteFile());
-		} else {
-			String host = System.getProperty("db.host");
-			String port = System.getProperty("db.port");
-			String name = System.getProperty("db.name");
-			String user = System.getProperty("db.user");
-			String password = System.getProperty("db.password");
-			this.put("db.host", host);
-			this.put("db.port", port);
-			this.put("db.name", name);
-			this.put("db.user", user);
-			this.put("db.password", password);
-			this.put("package", "");
-		}
+		InputStream in = Thread.currentThread().getContextClassLoader()
+				.getResourceAsStream(CONFIG_FILE);
+		this.load(in);
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName(DatabaseType.MySQL.getDriver());
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}

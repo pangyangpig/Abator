@@ -1,4 +1,4 @@
-package com.github.generator;
+package com.github.abator;
 
 import java.io.File;
 import java.io.FileInputStream;

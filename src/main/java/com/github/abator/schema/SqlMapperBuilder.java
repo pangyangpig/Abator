@@ -274,7 +274,7 @@ public class SqlMapperBuilder {
 			dir.mkdirs();
 		}
 		String fileName = dirPath + File.separator + table.getName()
-				+ "SQL.xml";
+				+ "_sql.xml";
 		File modelFile = new File(fileName);
 		try {
 			if (!modelFile.exists()) {

@@ -1,24 +1,25 @@
-package com.github.generator;
+package com.github.abator;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import com.github.abator.schema.Column;
 import com.github.abator.schema.Config;
-import com.github.abator.schema.DomainClassBuilder;
+import com.github.abator.schema.DaoImplClassBuilder;
 import com.github.abator.schema.Table;
 
-public class DomainClassBuilderTest extends BaseTestCase {
-	private DomainClassBuilder modelClassBuilder;
+public class DaoImplClassBuilderTest extends BaseTestCase {
+	private DaoImplClassBuilder daoImplClassBuilder;
 	private Config config;
 
-	protected void setUp() throws Exception {
-		// super.setUp();
-		config = new Config();
-		modelClassBuilder = new DomainClassBuilder(config);
-	}
-
-	public void testBuild() throws Exception {
+	public void test_build() {
+		try {
+			config = new Config();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		config.getProperties().put("dao.impl.package", "com.xiebiao.dao.impl");
+		daoImplClassBuilder = new DaoImplClassBuilder(config);
 		Column name = new Column();
 		name.setName("name");
 		name.setDataType("varchar");
@@ -45,6 +46,6 @@ public class DomainClassBuilderTest extends BaseTestCase {
 		table.setName("Person");
 		table.setColumns(columns);
 		table.setComment("这是表说明");
-		modelClassBuilder.from(table).build();
+		daoImplClassBuilder.from(table).build();
 	}
 }
