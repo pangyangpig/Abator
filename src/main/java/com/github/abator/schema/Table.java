@@ -1,9 +1,9 @@
-package com.github.generator.schema;
+package com.github.abator.schema;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import com.github.generator.utils.Util;
+import com.github.abator.utils.Util;
 
 public class Table {
 	private String name;

@@ -1,6 +1,6 @@
 package com.github.generator;
 
-import com.github.generator.schema.Config;
+import com.github.abator.schema.Config;
 
 import junit.framework.TestCase;
 

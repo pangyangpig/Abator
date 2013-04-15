@@ -3,10 +3,10 @@ package com.github.generator;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.github.generator.schema.Column;
-import com.github.generator.schema.Config;
-import com.github.generator.schema.DaoClassBuilder;
-import com.github.generator.schema.Table;
+import com.github.abator.schema.Column;
+import com.github.abator.schema.Config;
+import com.github.abator.schema.DaoClassBuilder;
+import com.github.abator.schema.Table;
 
 public class DaoClassBuilderTest extends BaseTestCase {
 	private DaoClassBuilder daoClassBuilder;

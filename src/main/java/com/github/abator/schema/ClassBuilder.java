@@ -1,8 +1,8 @@
-package com.github.generator.schema;
+package com.github.abator.schema;
 
 import java.io.File;
 
-import com.github.generator.utils.FileUtils;
+import com.github.abator.utils.FileUtils;
 
 public abstract class ClassBuilder {
 	private final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(this

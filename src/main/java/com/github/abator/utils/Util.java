@@ -1,4 +1,4 @@
-package com.github.generator.utils;
+package com.github.abator.utils;
 
 public class Util {
 	public static String getModelClassName(String name) {

@@ -16,9 +16,9 @@ import org.apache.ibatis.session.Configuration;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.generator.schema.Column;
-import com.github.generator.schema.SqlMapperBuilder;
-import com.github.generator.schema.Table;
+import com.github.abator.schema.Column;
+import com.github.abator.schema.SqlMapperBuilder;
+import com.github.abator.schema.Table;
 
 public class SqlMapperBuilderTest {
 	private org.hsqldb.Server db;

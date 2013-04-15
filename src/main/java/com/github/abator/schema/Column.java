@@ -1,4 +1,4 @@
-package com.github.generator.schema;
+package com.github.abator.schema;
 
 public class Column {
 	public String getName() {

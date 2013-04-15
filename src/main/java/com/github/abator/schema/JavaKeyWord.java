@@ -1,4 +1,4 @@
-package com.github.generator.schema;
+package com.github.abator.schema;
 
 /**
  * java数据类型关键字.

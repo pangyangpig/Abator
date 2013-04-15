@@ -1,11 +1,11 @@
-package com.github.generator.schema;
+package com.github.abator.schema;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import com.github.generator.utils.Util;
+import com.github.abator.utils.Util;
 
 /**
  * 生成DAO接口

@@ -1,11 +1,11 @@
-package com.github.generator;
+package com.github.abator;
 
-import com.github.generator.schema.Config;
-import com.github.generator.schema.DaoClassBuilder;
-import com.github.generator.schema.DaoImplClassBuilder;
-import com.github.generator.schema.DomainClassBuilder;
-import com.github.generator.schema.SqlMapperBuilder;
-import com.github.generator.schema.Table;
+import com.github.abator.schema.Config;
+import com.github.abator.schema.DaoClassBuilder;
+import com.github.abator.schema.DaoImplClassBuilder;
+import com.github.abator.schema.DomainClassBuilder;
+import com.github.abator.schema.SqlMapperBuilder;
+import com.github.abator.schema.Table;
 
 public class Main {
 

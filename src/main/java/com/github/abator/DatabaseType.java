@@ -1,4 +1,4 @@
-package com.github.generator;
+package com.github.abator;
 
 public enum DatabaseType {
 	MySQL("com.mysql.jdbc.Driver");

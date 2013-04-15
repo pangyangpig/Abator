@@ -1,4 +1,4 @@
-package com.github.generator.schema;
+package com.github.abator.schema;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.github.generator.utils.Constants;
-import com.github.generator.utils.FileUtils;
-import com.github.generator.utils.Util;
+import com.github.abator.utils.Constants;
+import com.github.abator.utils.FileUtils;
+import com.github.abator.utils.Util;
 
 /**
  * 生成表对应的domain
