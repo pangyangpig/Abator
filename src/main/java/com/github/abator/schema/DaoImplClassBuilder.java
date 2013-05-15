@@ -31,7 +31,7 @@ public class DaoImplClassBuilder extends DaoClassBuilder {
 		if (sb.length() != 0) {
 			sb.append("\n");
 		}
-		sb.append("import com.xiebiao.mybatis.dao.BaseDao;\n");
+		sb.append("import com.github.mybatis.dao.BaseDao;\n");
 		sb.append("\n");
 	}
 

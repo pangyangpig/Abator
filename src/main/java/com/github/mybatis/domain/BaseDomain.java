@@ -20,8 +20,6 @@ public abstract class BaseDomain implements java.io.Serializable {
 
     /** 查询最大行数. */
     // private int MAX_ROWS = 9999999;
-
-    private Integer               id;
     /**
      * 返回结果
      */
@@ -56,14 +54,6 @@ public abstract class BaseDomain implements java.io.Serializable {
 
     public void setResult(Integer result) {
         this.result = result;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     /**

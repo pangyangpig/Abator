@@ -13,9 +13,8 @@
 
 <configuration>
 
-	<!-- properties resource="org/apache/ibatis/builder/mapper.properties">
-		<property name="driver" value="org.apache.derby.jdbc.EmbeddedDriver" />
-	</properties-->
+	<!-- properties resource="org/apache/ibatis/builder/mapper.properties"> 
+		<property name="driver" value="org.apache.derby.jdbc.EmbeddedDriver" /> </properties -->
 
 	<settings>
 		<setting name="cacheEnabled" value="true" />
@@ -28,7 +27,7 @@
 	</settings>
 
 	<typeAliases>
-		<typeAlias alias="Product" type="com.xiebiao.tools.db.Product" />
+		<typeAlias alias="User" type="com.github.abator.domain.UserDomain" />
 	</typeAliases>
 
 	<environments default="development">
@@ -45,9 +44,9 @@
 		</environment>
 	</environments>
 
-	<!-- mappers>
-		<mapper resource="org/apache/ibatis/builder/AuthorMapper.xml" />
-	</mappers-->
+	<mappers>
+		<mapper resource="com/github/abator/User.xml" />
+	</mappers>
 
 </configuration>
 
