@@ -25,8 +25,7 @@ public abstract class BaseDao extends SqlSessionDaoSupport implements IDao {
     }
 
     public <T> T find(String keyId) throws DataAccessException {
-        T t = this.getSqlSession().selectOne(this.getNameSpace() + ".find", keyId);
-        return t;
+        return (T)this.getSqlSession().selectOne(this.getNameSpace() + ".find", keyId);
     }
 
     public <T> List<T> listForObject(T t) throws DataAccessException {

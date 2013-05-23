@@ -95,6 +95,7 @@
 					<configLocation>sun_checks.xml</configLocation>
 				</configuration>
 			</plugin>
+			<!--  
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
@@ -136,6 +137,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			-->
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.4</version>

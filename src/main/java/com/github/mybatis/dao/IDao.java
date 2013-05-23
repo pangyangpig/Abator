@@ -7,66 +7,27 @@ import org.springframework.dao.DataAccessException;
 import com.github.mybatis.domain.BaseDomain;
 
 /**
- * DAO接口
+ * DAO
  * @author xiebiao
  */
 public interface IDao {
 
-    /**
-     * @param <T> DO
-     * @param t
-     * @return
-     * @throws DataAccessException
-     */
     <T> Integer insert(T t) throws DataAccessException;
 
-    /**
-     * @param keyId
-     * @throws DataAccessException
-     */
     Integer delete(String keyId) throws DataAccessException;
 
-    /**
-     * @param <T> DO
-     * @param t
-     * @throws DataAccessException
-     */
     <T> Integer update(T t) throws DataAccessException;
 
-    /**
-     * @param <T> DO
-     * @param keyId
-     * @return
-     * @throws DataAccessException
-     */
     <T> T find(String keyId) throws DataAccessException;
 
-    /**
-     * @param <T> DO
-     * @param t
-     * @return
-     * @throws DataAccessException
-     */
-    <T> List<T> listForObject(T t) throws DataAccessException;
+    <E> List<E> listForObject(E t) throws DataAccessException;
 
-    /**
-     * @param <T> DO
-     * @param t
-     * @return
-     * @throws DataAccessException
-     */
-    <T> Integer countForObject(T t) throws DataAccessException;
+    <E> Integer countForObject(E t) throws DataAccessException;
 
-    <T extends BaseDomain> List<T> insertBatch(final List<T> t);
+    <E extends BaseDomain> List<E> insertBatch(final List<E> t);
 
-    <T extends BaseDomain> List<T> updateBatch(final List<T> t);
+    <E extends BaseDomain> List<E> updateBatch(final List<E> t);
 
-    /**
-     * 根据自定义sqlID批量更新
-     * @param t
-     * @param updateSqlId ibatis配置id
-     * @return
-     */
-    <T extends BaseDomain> List<T> updateBatch(final List<T> t, final String updateSqlId);
+    <E extends BaseDomain> List<E> updateBatch(final List<E> t, final String updateSqlId);
 
 }
